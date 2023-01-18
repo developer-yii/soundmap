@@ -1,0 +1,92 @@
+.mb-20{
+	margin-bottom:20px;
+}
+.error{
+	color: #fa5c7c;
+}
+.tag.label-info{
+	background: #727cf5;
+    border-radius: 10px;
+    border-radius: 3px;
+    padding: 0px 7px 0px 7px;
+}
+.bootstrap-tagsinput{
+	float: left;
+    width: 100%;
+    margin-bottom: 10px;
+    display: block;
+    width: 100%;
+    padding: 0.45rem 0.9rem;
+    font-size: .9rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #6c757d;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #dee2e6;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.25rem;
+    -webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+}
+.form-wrap.form-builder .stage-wrap{
+    min-height: 528px !important;
+}
+.action-column{
+    min-width: 200px !important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove,
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover, .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus,
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #727cf5;
+    border: 1px solid #727cf5;
+    color: white;
+}
+.select2-container--default .select2-selection--single{
+    border: 1px solid #dee2e6!important;
+}
+.checklist-row .applicable{
+    display: none;
+}
+.task-done{
+    text-decoration: line-through;
+    color: #d0d0d0
+}
+.task-not-applicable{
+    text-decoration: line-through;
+    color: #d21010 !important;
+}
+.task-not-applicable .form-check{
+    display: none;
+}
+.task-not-applicable .applicable{
+    display: block;
+}
+.task-not-applicable .not-applicable{
+    display: none;
+}
+input[data-switch]+label{
+    background-color:#d7cbcb;
+}
+.td-tags{
+    display: none;
+}
+
+@media(max-width:360px){
+    .hide-table-td-mobile{
+        display: none;
+    }
+}
+
+@media(max-width:767px){
+    .hide-table-td-mobile{
+        display: none;
+    }
+}
+.hidden{
+    display: none;
+}
