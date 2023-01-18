@@ -73,7 +73,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-6">
-                                <script>document.write(new Date().getFullYear())</script> ©Order Processing
+                                <script>document.write(new Date().getFullYear())</script> ©sound map
                             </div>
                         </div>
                     </div>

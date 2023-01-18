@@ -3,7 +3,7 @@
     <!-- LOGO -->
     <a href="{{route('home')}}" class="logo text-center logo-light">
         <span class="logo-lg">
-            <img src="#" alt="" height="30">
+            <img src="{{asset('theme/images/logo-dark.png')}}" alt="" height="30">
         </span>
     </a>
 
