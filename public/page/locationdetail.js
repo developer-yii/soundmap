@@ -4,11 +4,113 @@ $(document).ready(function() {
    
    CKEDITOR.replace( 'description', {
         
+    });
+
+     $('#create_location_form').submit(function(event) {   
+        event.preventDefault();
+        // event.stopImmediatePropagation();
+        $('.error').html("");
+        $('#create_location_form .error').show();
+
+        var message = CKEDITOR.instances['description'].getData();
+        $('#description').val(message);
+
+        var $this = $(this);
+        var insert = new FormData($('#create_location_form')[0]);
+        $.ajax({
+            url:createlocationUrl,
+            type: 'POST',
+            data: insert,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            cache : false,
+            async : false,
+            beforeSend: function() {
+                $($this).find('button[type="submit"]').prop('disabled', true);
+            },
+            success: function(result) {
+                $($this).find('button[type="submit"]').prop('disabled', false);
+                if (result.status == true) {
+                    $this[0].reset();
+                    element = $('#flash-message');
+                    showFlash(element, result.message, 'success');
+                    window.location.href=result.data;
+                    $('.error').html("");
+                } else {
+                   
+                   first_input = "";
+                    $('.error').html("");
+                    $.each(result.error, function(key)
+                        {
+                        if(first_input=="") first_input=key;
+                        $('#create_location_form .error-'+key).html(result.error[key]);  
+
+                    });
+                    $('#create_location_form').find("."+first_input).focus(); 
+                  }
+            },
+            error: function(error) {
+                $($this).find('button[type="submit"]').prop('disabled', false);
+                alert('Something went wrong!', 'error');
+            }
+        });
+    }); 
+
+
+    $('#edit_location_form').submit(function(event) {   
+        event.preventDefault();
+        // event.stopImmediatePropagation();
+        $('.error').html("");
+        $('#edit_location_form .error').show();
+
+        var message = CKEDITOR.instances['description'].getData();
+        $('#description').val(message);
+
+        var $this = $(this);
+        var insert = new FormData($('#edit_location_form')[0]);
+        $.ajax({
+            url:updatelocationUrl,
+            type: 'POST',
+            data: insert,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            cache : false,
+            async : false,
+            beforeSend: function() {
+                $($this).find('button[type="submit"]').prop('disabled', true);
+            },
+            success: function(result) {
+                $($this).find('button[type="submit"]').prop('disabled', false);
+                if (result.status == true) {
+                    $this[0].reset();
+                    element = $('#flash-message');
+                    showFlash(element, result.message, 'success');
+                    window.location.href=result.data;
+                    $('.error').html("");
+                } else {
+                   
+                   first_input = "";
+                    $('.error').html("");
+                    $.each(result.error, function(key)
+                        {
+                        if(first_input=="") first_input=key;
+                        $('#edit_location_form .error-'+key).html(result.error[key]);  
+
+                    });
+                    $('#edit_location_form').find("."+first_input).focus(); 
+                  }
+            },
+            error: function(error) {
+                $($this).find('button[type="submit"]').prop('disabled', false);
+                alert('Something went wrong!', 'error');
+            }
+        });
     }); 
 
 
     $('.delete-img').on('click',function(e){
-
     var $this = $(this);
     var imgval =$(this).attr('value');
     var id=$(this).attr('data-id');

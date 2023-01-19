@@ -77,15 +77,17 @@ class LocationController extends Controller
                 'description.required' => 'Description is required',
                 'images.required' => 'Please select images',
                 "images.mimes" =>'Please select images only ' ,
-                "audio_file.mimes" =>'select audio file  is only ' ,
-                "video_file.mimes" =>'select video file is only' ,
+                "audio_file.mimes" =>'Select audio file  is only ' ,
+                "video_file.mimes" =>'Select video file is only' ,
 
             ];
             
             $validator = Validator::make($request->all(),[
                 "location_name" => ["required"],
-                "latitude" => ["required"],
-                "longitude" => ["required", "string"],
+                'latitude' => ['required','regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/'],             
+                'longitude' => ['required','regex:/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/'],
+                // "latitude" => ["required"],
+                // "longitude" => ["required", "string"],
                 "description" => ["required", "string"],
                 "audio_file" => ["mimes:ogg,mp3"],
                 "video_file" => ["mimes:mp4,ogg"],
@@ -96,7 +98,10 @@ class LocationController extends Controller
                 // dd($validator);
                 if($validator->fails()){
 
-                    return redirect()->back()->withErrors($validator->errors())->withInput($request->input());
+                    $result = ["status" => false,"error" => $validator->errors(),"data" => [],];
+                        return response()->json($result);
+
+                    // return redirect()->back()->withErrors($validator->errors())->withInput($request->input());
 
                 }else{
 
@@ -173,8 +178,12 @@ class LocationController extends Controller
                             $locationimage->save();
                             $count++;
                         }
-                    }   
-                    return redirect()->route('location');                     
+                    } 
+
+                    $result = [ "status" => true, "message" => 'location Update successfully',"data" => route("location")];
+                    return response()->json($result);
+
+                    // return redirect()->route('location');                     
                 }
                 else{
                      return redirect()->back()->withErrors($updatelocation->getErrors())->withInput($request->input());
@@ -203,21 +212,25 @@ class LocationController extends Controller
            $customMessages = [
                 'location_name.required' => 'Location name is required',
                 'latitude.required' => 'Latitude  is required',
-                'longitude.required' => 'Longitude is required',
+                'latitude.required' => 'Latitude  is required',
+                'longitude.regex' => 'Latitude value appears to be incorrect format.',
+                'longitude.regex' => 'Longitude value appears to be incorrect format.',
                 'description.required' => 'Description is required',
                 'images.required' => 'Please select images',
                 "images.mimes" =>'Please select images only ' ,
                 "audio_file.required" =>'Audio file  is required' ,
-                "audio_file.mimes" =>'select audio file  is only ' ,
+                "audio_file.mimes" =>'Select audio file  is only ' ,
                 "video_file.required" =>'Video file is required' ,
-                "video_file.mimes" =>'select video file is only' ,
+                "video_file.mimes" =>'Select video file is only' ,
 
             ];
             
             $validator = Validator::make($request->all(),[
                 "location_name" => ["required"],
-                "latitude" => ["required"],
-                "longitude" => ["required", "string"],
+                'latitude' => ['required','regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/'],             
+                'longitude' => ['required','regex:/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/'],
+                // "latitude" => ["required"],
+                // "longitude" => ["required", "string"],
                 "description" => ["required", "string"],
                 "audio_file" => ["required","mimes:ogg,mp3"],
                 "video_file" => ["required","mimes:mp4,ogg"],
@@ -225,10 +238,12 @@ class LocationController extends Controller
                 "images"    => ["required","array","min:1"],
 
             ],$customMessages);
-                // dd($validator);
                 if($validator->fails()){
-                    //dd($validator->errors());
-                    return redirect()->back()->withErrors($validator->errors())->withInput($request->input());
+
+                        $result = ["status" => false,"error" => $validator->errors(),"data" => [],];
+                        return response()->json($result);
+
+                    // return redirect()->back()->withErrors($validator->errors())->withInput($request->input());
 
                 }else{
                     // dd($request->all());
@@ -293,8 +308,12 @@ class LocationController extends Controller
                                 $locationimage->save();
                                 $count++;
                             }
-                        }   
-                        return redirect()->route('location');                     
+                        } 
+
+                        $result = [ "status" => true, "message" => 'location Add successfully',"data" => route("location")];
+                        return response()->json($result);
+
+                        // return redirect()->route('location');                     
                     }
                     else{
                          return redirect()->back()->withErrors($locations->getErrors())->withInput($request->input());

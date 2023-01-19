@@ -11,7 +11,7 @@
    <div class="card-body">
       <div align="center">
          <div class="w-50 text-start text-left" style="float: left;">
-            <form  id="create_user_form" method="POST" enctype="multipart/form-data" action="{{ route('location.update') }}">
+            <form  id="edit_location_form" method="POST" enctype="multipart/form-data" action="{{ route('location.update') }}">
             @csrf
              <input type="hidden" id="id" name="id"  value="{{$data->id}}">
             <div class="form-group fv-row mt-2">
@@ -64,7 +64,7 @@
                @endif
                <input class="form-control @error('images') is-invalid @enderror" style="height: auto;" type="file" id="images" name="images[]" multiple>
                <span class="error-border"></span>
-               <span class="text-danger error invalid-data error-audio_file" id="error_audio_file"></span>
+               <span class="text-danger error invalid-data error-images" id="error_images"></span>
                  @if($errors->has('images'))
                       <div class="error">{{ $errors->first('images') }}</div>
                   @endif
@@ -111,6 +111,7 @@
 <script>
    var apiUrl = "{{ route('location.list') }}"; 
    var deleteimgurl = "{{ route('location.deleteimage',['id' => ':id']) }}"; 
+   var updatelocationUrl = "{{ route('location.update') }}"; 
 </script>
 
 <script src="{{asset('/')}}page/locationdetail.js?{{cacheclear()}}"></script>

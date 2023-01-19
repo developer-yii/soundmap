@@ -11,7 +11,7 @@
    <div class="card-body">
       <div align="center">
          <div class="w-50 text-start text-left" style="float: left;">
-            <form  id="create_user_form" method="POST" enctype="multipart/form-data" action="{{ route('location.add') }}">
+            <form  id="create_location_form" method="POST" enctype="multipart/form-data" action="{{ route('location.add') }}">
             @csrf
             <div class="form-group fv-row mt-2">
                <label for="location name">Location name</label>
@@ -53,7 +53,7 @@
                <label for="Image">Image</label>
                <input class="form-control @error('images') is-invalid @enderror" style="height: auto;" type="file" id="images" name="images[]" multiple>
                <span class="error-border"></span>
-               <span class="text-danger error invalid-data error-audio_file" id="error_audio_file"></span>
+               <span class="text-danger error invalid-data error-images" id="error_images"></span>
                @if($errors->has('images'))
                    <div class="error">{{ $errors->first('images') }}</div>
                @endif
@@ -94,6 +94,7 @@
 @section('pagejs')
 <script>
    var apiUrl = "{{ route('location.list') }}"; 
+   var createlocationUrl = "{{ route('location.add') }}"; 
 </script>
 
 <script src="{{asset('/')}}page/locationdetail.js?{{cacheclear()}}"></script>
