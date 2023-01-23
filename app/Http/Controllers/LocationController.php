@@ -61,7 +61,6 @@ class LocationController extends Controller
     {
         $data = locations::where("id", $request->id)->first();
         $locationsimg = \DB::table('location_image')->select('location_id','image_path','id')->whereNotNull('image_path')->where('location_id',$request->id)->whereNull('deleted_at')->get();
-        // dd($locationsimg);
 
         if ($data) {
             return view("location.edit", ["data" => $data,"locationsimg"=>$locationsimg]);
@@ -217,7 +216,7 @@ class LocationController extends Controller
                 'longitude.regex' => 'Longitude value appears to be incorrect format.',
                 'description.required' => 'Description is required',
                 'images.required' => 'Please select images',
-                "images.mimes" =>'Please select images only ' ,
+                "images.*.mimes" =>'Please select images only ' ,
                 "audio_file.required" =>'Audio file  is required' ,
                 "audio_file.mimes" =>'Select audio file  is only ' ,
                 "video_file.required" =>'Video file is required' ,

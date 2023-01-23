@@ -41,10 +41,16 @@ $(document).ready(function() {
                    
                    first_input = "";
                     $('.error').html("");
-                    $.each(result.error, function(key)
-                        {
-                        if(first_input=="") first_input=key;
-                        $('#create_location_form .error-'+key).html(result.error[key]);  
+                    $.each(result.error, function(key){
+                        var custom_key =key;
+                        if( custom_key.indexOf('.') !== -1 ){
+                            custom_key = custom_key.slice(0, custom_key.indexOf('.'));
+                        }
+                        
+                        if(first_input=="") first_input=custom_key;
+                        $('#create_location_form .error-'+custom_key).html(result.error[key]);  
+
+                        // console.log('.error-'+key+' '+result.error[key]);
 
                     });
                     $('#create_location_form').find("."+first_input).focus(); 
@@ -93,10 +99,16 @@ $(document).ready(function() {
                    
                    first_input = "";
                     $('.error').html("");
-                    $.each(result.error, function(key)
-                        {
-                        if(first_input=="") first_input=key;
-                        $('#edit_location_form .error-'+key).html(result.error[key]);  
+                     $.each(result.error, function(key){
+                        var custom_key =key;
+                        if( custom_key.indexOf('.') !== -1 ){
+                            custom_key = custom_key.slice(0, custom_key.indexOf('.'));
+                        }
+                        
+                        if(first_input=="") first_input=custom_key;
+                        $('#edit_location_form .error-'+custom_key).html(result.error[key]);  
+
+                        // console.log('.error-'+key+' '+result.error[key]);
 
                     });
                     $('#edit_location_form').find("."+first_input).focus(); 
