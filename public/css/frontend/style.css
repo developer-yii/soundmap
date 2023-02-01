@@ -180,3 +180,7 @@ label {
 .audio-wrapper audio {
   width: 100%;
 }
+
+.selected{
+  color: red!important;
+}

@@ -20,7 +20,7 @@ Route::group(['prefix' => 'location'], function () {
 
 	});
 
-Route::group(['prefix' => 'dashboard'], function () {
+Route::group(['prefix' => 'frontend'], function () {
 	Route::get('/', 'DashboardController@index')->name('dashboard');
 	Route::get('/index', 'DashboardController@index')->name('dashboard');
 	Route::get('/getDetail', 'DashboardController@getLocationDetail')->name('dashboard.location.detail');		
