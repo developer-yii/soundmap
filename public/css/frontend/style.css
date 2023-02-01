@@ -93,9 +93,9 @@ label {
   transition: 0.2s all ease;
 }
 
-.nation-item1-list ul li:nth-child(6) a {
+/*.nation-item1-list ul li:nth-child(6) a {
   color: #ff0000;
-}
+}*/
 
 .round-btn {
   width: 20px;
