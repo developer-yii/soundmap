@@ -63,8 +63,8 @@ $(document).ready(function(){
 	            $('#latitude').html(result.data.latitude);  
 	            $('#longitude').html(result.data.longitude);  
 	            $('#description').html(result.data.description);
-	            $('.audio_song').html('<audio style="width: 100%;" controls><source src="'+audio+'/'+result.data.audio_file+'" type="audio/ogg"></source></audio>');
-	            $('.video_song').html('<video style="width: 100%;" controls><source src="'+video+'/'+result.data.video_file+'" type="video/ogg"></source></video>');
+	            $('.audio_song').html('<audio style="width: 100%;" controls><source src="'+result.audioSource+'" type="audio/ogg"></source></audio>');
+	            $('.video_song').html('<video style="width: 100%;" controls><source src="'+result.videoSource+'" type="video/ogg"></source></video>');
 	            $('#images').html('');
 	            $.each(result.locationsimg, function(key,value) {
 	              $('#images').append('<img src="'+img+'/'+value.image_path+'" style="margin-bottom: 10px;width:80px;height:80px;border: 1px solid;">');  
