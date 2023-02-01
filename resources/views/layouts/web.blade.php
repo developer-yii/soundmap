@@ -74,6 +74,9 @@
         <!--MAIN-JQUERY-->
         <script src="{{asset('/')}}js/frontend/custom.js"></script>
 
+        <!--Open Layers-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script>
+
         <script>
             $(document).ready(function(){
                 setTimeout(function(){
