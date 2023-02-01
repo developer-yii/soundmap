@@ -20,6 +20,9 @@ Route::group(['prefix' => 'location'], function () {
 
 	});
 
+Route::get('/map', 'SiteController@map')->name('map');
+Route::get('/detail', 'SiteController@detail')->name('map.detail');
+
 Route::middleware(['auth'])->group(function () {
 	Route::get('/home', 'HomeController@index')->name('home');
 	
