@@ -26,6 +26,10 @@ Route::group(['prefix' => 'dashboard'], function () {
 	Route::get('/getDetail', 'DashboardController@getLocationDetail')->name('dashboard.location.detail');		
 });
 
+Route::get('/map', 'SiteController@map')->name('map');
+Route::get('/detail', 'SiteController@detail')->name('map.detail');
+
+
 Route::middleware(['auth'])->group(function () {
 	Route::get('/home', 'HomeController@index')->name('home');
 	
