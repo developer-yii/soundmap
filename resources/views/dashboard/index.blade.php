@@ -20,11 +20,25 @@
                 </div>
             </div>  
             <div class="nation-item1-list mt-5">
+            	<?php
+            		$vidFile = '';
+            		$audFile = '';
+            		$locName = '';
+            		$lat = '';
+            		$long = '';
+            		$desc = '';
+            	?>
                 <ul id="myUL">
                 	@if($locations)
                 		@foreach($locations as $key => $location)
                 			<?php
-                				$loc = $locations[0];                				
+                				$loc = $locations[0];    
+                				$vidFile = $loc->video_file;
+			            		$audFile = $loc->audio_file;
+			            		$locName = $loc->location_name;
+			            		$lat = $loc->latitude;
+			            		$long = $loc->longitude; 
+			            		$desc = $loc->description;      				
                 			?>
 		                    <li>
 		                        <a href="javascript:void(0)" data-id="{{ $location->id }}" class="locationName {{($key == 0 )?"selected":""}}">
@@ -41,19 +55,19 @@
         <div class="nation-item2">
             <div class="video-wrapper">
                <video controls width="100%" id="video">
-                <source id="videoTag" src="{{ asset('video/locationvideo/'.$loc->video_file) }}" type='video/mp4'/>
+                <source id="videoTag" src="{{ asset('video/locationvideo/'.$vidFile) }}" type='video/mp4'/>
                 {{-- <source  src="{{ asset('video/video10.webm') }}" type='video/webm'/> --}}
                 </video>
             </div>
             <div class="audio-wrapper">
                 <audio controls id="audio">
-                 <source id="audioTag" src="{{ asset('audio/locationaudio/'.$loc->audio_file) }}" type="audio/mpeg"/>
+                 <source id="audioTag" src="{{ asset('audio/locationaudio/'.$audFile) }}" type="audio/mpeg"/>
                 </audio>
             </div>      
             <div class="nation-item2-list">
                 <ul>
-                    <li id="locationName">{{$loc->location_name}}</li>                    
-                    <li id="location">{{$loc->latitude}} {{$loc->longitude}}</li>
+                    <li id="locationName">{{$locName}}</li>                    
+                    <li id="location">{{$lat}} {{$long}}</li>
                     {{-- <li>9AM</li>
                     <li>13.11.2023</li> --}}
                     {{-- <li id="description">Lewitt LCT 540S, Sound Devices MixPre 6</li> --}}
@@ -62,7 +76,7 @@
             <div class="nation-item2-list2">
                 <ul>
                 	<li id="locDescription">                		
-	                    {!! $loc->description !!}
+	                    {!! $desc !!}
                 	</li>
                 </ul>
             </div>
