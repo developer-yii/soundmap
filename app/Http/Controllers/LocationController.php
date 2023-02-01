@@ -246,77 +246,76 @@ class LocationController extends Controller
 
                 }else{
                     // dd($request->all());
-                    $locations = new locations;
-                    $locations->location_name = $request->location_name;
-                    $locations->latitude = $request->latitude;
-                    $locations->longitude = $request->longitude;
-                    $locations->description = $request->description;
-                    $locations->location_name = $request->location_name;
+                        $locations = new locations;
+                        $locations->location_name = $request->location_name;
+                        $locations->latitude = $request->latitude;
+                        $locations->longitude = $request->longitude;
+                        $locations->description = $request->description;
+                        $locations->location_name = $request->location_name;
 
-                    if($request->hasFile('audio_file')){
-                     $uniqueid=uniqid();
-                     $original_name=$request->file('audio_file')->getClientOriginalName();
-                     $size=$request->file('audio_file')->getSize();
-                     $extension=$request->file('audio_file')->getClientOriginalExtension();
-                     $filename=Carbon::now()->format('Ymd').'_'.$uniqueid.'.'.$extension;
-                     $audiopath=public_path('audio/locationaudio');
-                     //$audiopath=url('/storage/upload/files/audio/'.$filename);
-                     $request->file('audio_file')->move($audiopath.'/',$filename);   
-                     //$path=$file->storeAs('public/upload/files/audio/',$filename);
-                     $locations->audio_file = $filename;
-                    }
-
-                    if($request->hasFile('video_file')){
-                     $uniqueid=uniqid();
-                     $original_name=$request->file('video_file')->getClientOriginalName();
-                     $size=$request->file('video_file')->getSize();
-                     $extension=$request->file('video_file')->getClientOriginalExtension();
-                     $filename=Carbon::now()->format('Ymd').'_'.$uniqueid.'.'.$extension;
-                     $videopath=public_path('video/locationvideo');
-                     //$audiopath=url('/storage/upload/files/audio/'.$filename);
-                     $request->file('video_file')->move($videopath.'/',$filename);   
-                     //$path=$file->storeAs('public/upload/files/audio/',$filename);
-                     $locations->video_file = $filename;
-                    }
-
-                    if($locations->save()){
-                         $image=array();
-                         $directoryPath=public_path('images/locationimage/'.$locations->id);
-                            if (!file_exists($directoryPath)) {
-                                 $folder =File::makeDirectory($directoryPath);
-                            }
-
-                        // $folder =File::makeDirectory($directoryPath);
-                        $time = time();
-
-                        if($files=$request->file('images')){
-                            foreach($files as $file){
-                                $imageName = $time.'_'.$file->getClientOriginalName();
-                                $file->move($directoryPath.'/',$imageName);                            
-                                $image[]=$locations->id.'/'.$imageName;
-                            }
+                        if($request->hasFile('audio_file')){
+                         $uniqueid=uniqid();
+                         $original_name=$request->file('audio_file')->getClientOriginalName();
+                         $size=$request->file('audio_file')->getSize();
+                         $extension=$request->file('audio_file')->getClientOriginalExtension();
+                         $filename=Carbon::now()->format('Ymd').'_'.$uniqueid.'.'.$extension;
+                         $audiopath=public_path('audio/locationaudio');
+                         //$audiopath=url('/storage/upload/files/audio/'.$filename);
+                         $request->file('audio_file')->move($audiopath.'/',$filename);   
+                         //$path=$file->storeAs('public/upload/files/audio/',$filename);
+                         $locations->audio_file = $filename;
                         }
 
-                        if($filedata=$request->file('images')){
-                            $count = 1;
-                            foreach($filedata as $fdata){
-                                $name=$time.'_'.$fdata->getClientOriginalName();
-                                $locationimage = new locationimgs();
-                                $locationimage->location_id = $locations->id;
-                                $locationimage->image_path =$locations->id.'/'.$time.'_'.$fdata->getClientOriginalName();
-                                $locationimage->save();
-                                $count++;
+                        if($request->hasFile('video_file')){
+                         $uniqueid=uniqid();
+                         $original_name=$request->file('video_file')->getClientOriginalName();
+                         $size=$request->file('video_file')->getSize();
+                         $extension=$request->file('video_file')->getClientOriginalExtension();
+                         $filename=Carbon::now()->format('Ymd').'_'.$uniqueid.'.'.$extension;
+                         $videopath=public_path('video/locationvideo');
+                         //$audiopath=url('/storage/upload/files/audio/'.$filename);
+                         $request->file('video_file')->move($videopath.'/',$filename);   
+                         //$path=$file->storeAs('public/upload/files/audio/',$filename);
+                         $locations->video_file = $filename;
+                        }
+
+                            if($locations->save()){
+                                 $image=array();
+                                 $directoryPath=public_path('images/locationimage/'.$locations->id);
+                                    if (!file_exists($directoryPath)) {
+                                         $folder =File::makeDirectory($directoryPath);
+                                    }
+
+                                // $folder =File::makeDirectory($directoryPath);
+                                $time = time();
+
+                                if($files=$request->file('images')){
+                                    foreach($files as $file){
+                                        $imageName = $time.'_'.$file->getClientOriginalName();
+                                        $file->move($directoryPath.'/',$imageName);                            
+                                        $image[]=$locations->id.'/'.$imageName;
+                                    }
+                                }
+
+                                if($filedata=$request->file('images')){
+                                    $count = 1;
+                                    foreach($filedata as $fdata){
+                                        $name=$time.'_'.$fdata->getClientOriginalName();
+                                        $locationimage = new locationimgs();
+                                        $locationimage->location_id = $locations->id;
+                                        $locationimage->image_path =$locations->id.'/'.$time.'_'.$fdata->getClientOriginalName();
+                                        $locationimage->save();
+                                        $count++;
+                                    }
+                                } 
+
+                                $result = [ "status" => true, "message" => 'location Add successfully',"data" => route("location")];
+                                return response()->json($result);
+
+                                // return redirect()->route('location');                     
+                            }else{
+                                 return redirect()->back()->withErrors($locations->getErrors())->withInput($request->input());
                             }
-                        } 
-
-                        $result = [ "status" => true, "message" => 'location Add successfully',"data" => route("location")];
-                        return response()->json($result);
-
-                        // return redirect()->route('location');                     
-                    }
-                    else{
-                         return redirect()->back()->withErrors($locations->getErrors())->withInput($request->input());
-                    }
                 }    
           
        }
