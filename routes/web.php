@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect(route('login'));
-});
+// Route::get('/', function () {
+//     return redirect(route('dashboard'));
+// });
 Auth::routes();
 
 Route::group(['prefix' => 'location'], function () {
@@ -20,11 +20,9 @@ Route::group(['prefix' => 'location'], function () {
 
 	});
 
-Route::group(['prefix' => 'frontend'], function () {
-	Route::get('/', 'DashboardController@index')->name('dashboard');
-	Route::get('/index', 'DashboardController@index')->name('dashboard');
-	Route::get('/getDetail', 'DashboardController@getLocationDetail')->name('dashboard.location.detail');		
-});
+Route::get('/', 'DashboardController@index')->name('dashboard');
+Route::get('/index', 'DashboardController@index')->name('dashboard');
+Route::get('/getDetail', 'DashboardController@getLocationDetail')->name('dashboard.location.detail');
 
 Route::get('/map', 'SiteController@map')->name('map');
 Route::get('/detail', 'SiteController@detail')->name('map.detail');
