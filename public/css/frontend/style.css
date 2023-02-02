@@ -56,7 +56,7 @@ label {
 }
 
 /*==THIS IS START==*/
-.nation-item1 {
+.nation-item1, .nation-item3 {
   position: sticky;
   height: 100vh;
   overflow-y: scroll;
@@ -183,4 +183,17 @@ label {
 
 .selected{
   color: red!important;
+}
+
+.modal-image{
+  margin-bottom: 10px;
+  width:80px;
+  height:80px;
+  border: 1px solid;
+}
+.mfp-bg, .mfp-wrap{
+  z-index: 1090!important;
+}
+.mfp-content{
+ z-index: 1092!important; 
 }
