@@ -65,14 +65,37 @@ $(document).ready(function(){
 	            $('#description').html(result.data.description);
 	            $('.audio_song').html('<audio style="width: 100%;" controls><source src="'+result.audioSource+'" type="audio/ogg"></source></audio>');
 	            $('.video_song').html('<video style="width: 100%;" controls><source src="'+result.videoSource+'" type="video/ogg"></source></video>');
-	            $('#images').html('');
+                $('#images').html('');            
+
 	            $.each(result.locationsimg, function(key,value) {
-	              $('#images').append('<img src="'+img+'/'+value.image_path+'" style="margin-bottom: 10px;width:80px;height:80px;border: 1px solid;">');  
-	            });
+	              $('#images').append('<a href="'+img+'/'+value.image_path+'" class="image-popup"><img src="'+img+'/'+value.image_path+'" class="modal-image" /></a>');  
+	            });       
+
+                initMagnific();                        
 
 	        }
 	    });          
 	}
+
+    function initMagnific(argument) {
+        $('.popup-gallery').magnificPopup({
+            delegate: 'a',
+            type: 'image',
+            tLoading: 'Loading image #%curr%...',
+            mainClass: 'mfp-img-mobile',
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+            },
+            image: {
+                tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+                // titleSrc: function(item) {
+                //     return item.el.attr('title') + '<small></small>';
+                // }
+            }
+        });
+    }
 
 	function destroyPopup(feature) {
 		
