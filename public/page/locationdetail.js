@@ -9,13 +9,16 @@ $(document).ready(function() {
      $('#create_location_form').submit(function(event) {   
         event.preventDefault();
         // event.stopImmediatePropagation();
-        $('.error').html("");
+        
         $('#create_location_form .error').show();
+        $this = $(this);        
+
+        var buttonLoading = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Processing';
+        var buttonSave = 'Submit';
 
         var message = CKEDITOR.instances['description'].getData();
         $('#description').val(message);
 
-        var $this = $(this);
         var insert = new FormData($('#create_location_form')[0]);
         $.ajax({
             url:createlocationUrl,
@@ -24,13 +27,15 @@ $(document).ready(function() {
             dataType: 'json',
             contentType: false,
             processData: false,
-            cache : false,
-            async : false,
+            // cache : false,
+            // async : false,
             beforeSend: function() {
-                $($this).find('button[type="submit"]').prop('disabled', true);
+                $this.find('button[type="submit"]').html(buttonLoading);                
+                $this.find('button[type="submit"]').prop('disabled', true);
             },
-            success: function(result) {
-                $($this).find('button[type="submit"]').prop('disabled', false);
+            success: function(result) {                
+                $this.find('button[type="submit"]').html(buttonSave);
+                $this.find('button[type="submit"]').prop('disabled', false);
                 if (result.status == true) {
                     $this[0].reset();
                     element = $('#flash-message');
@@ -57,7 +62,8 @@ $(document).ready(function() {
                   }
             },
             error: function(error) {
-                $($this).find('button[type="submit"]').prop('disabled', false);
+                $this.find('button[type="submit"]').html(buttonSave);
+                $this.find('button[type="submit"]').prop('disabled', false);
                 alert('Something went wrong!', 'error');
             }
         });
