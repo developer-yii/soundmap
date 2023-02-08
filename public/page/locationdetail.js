@@ -53,6 +53,7 @@ $(document).ready(function() {
                         }
                         
                         if(first_input=="") first_input=custom_key;
+                        
                         $('#create_location_form .error-'+custom_key).html(result.error[key]);  
 
                         // console.log('.error-'+key+' '+result.error[key]);
