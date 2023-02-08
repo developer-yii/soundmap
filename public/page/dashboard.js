@@ -63,8 +63,22 @@ $(document).ready(function(){
 	            $('#latitude').html(result.data.latitude);  
 	            $('#longitude').html(result.data.longitude);  
 	            $('#description').html(result.data.description);
-	            $('.audio_song').html('<audio style="width: 100%;" controls><source src="'+result.audioSource+'" type="audio/ogg"></source></audio>');
-	            $('.video_song').html('<video style="width: 100%;" controls><source src="'+result.videoSource+'" type="video/ogg"></source></video>');
+                $('.audio_song').show();
+                $('.video_song').show();
+                console.log(result);
+                if(result.audioSource)
+                {
+	               $('.audio_song').html('<audio style="width: 100%;" controls><source src="'+result.audioSource+'" type="audio/ogg"></source></audio>');
+                }
+                else{
+                    $('.audio_song').hide();
+                }
+                if(result.videoSource){
+	               $('.video_song').html('<video style="width: 100%;" controls><source src="'+result.videoSource+'" type="video/ogg"></source></video>');
+                }
+                else{
+                    $('.video_song').hide('');
+                }
                 $('#images').html('');            
 
 	            $.each(result.locationsimg, function(key,value) {
@@ -122,18 +136,31 @@ $(document).ready(function(){
             dataType: 'json',
             success: function(result) {
                 if (result.status == true) {         
+                    $('.video-wrapper').show();
+                    if(result.videoSource)
+                    {                        
+                    	video = $("#video").get(0);
+                    	video1 = $("#videoTag")[0];                	
+                    	video1.src = result.videoSource;       
+                    	video.pause();
+                    	video.load();                    
+                    }
+                    else{
+                        $('.video-wrapper').hide();
+                    }
 
-                	video = $("#video").get(0);
-                	video1 = $("#videoTag")[0];                	
-                	video1.src = result.videoSource;       
-                	video.pause();
-                	video.load();                    
-
-                    audio = $("#audio").get(0);
-                	audio1 = $("#audioTag")[0];                	
-                	audio1.src = result.audioSource;       
-                	audio.pause();
-                	audio.load();
+                    $('.audio-wrapper').show();
+                    if(result.audioSource)
+                    {
+                        audio = $("#audio").get(0);
+                    	audio1 = $("#audioTag")[0];                	
+                    	audio1.src = result.audioSource;       
+                    	audio.pause();
+                    	audio.load();
+                    }
+                    else{
+                        $('.audio-wrapper').hide();
+                    }
 
                     $('#locationName').html(result.location.location_name);
                     $('#locDescription').html(result.location.description);

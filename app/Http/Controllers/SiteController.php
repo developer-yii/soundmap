@@ -46,8 +46,8 @@ class SiteController extends Controller
 
         $locationsimg = \DB::table('location_image')->select('location_id','image_path','id')->whereNotNull('image_path')->where('location_id',$request->id)->whereNull('deleted_at')->get();
 
-        $videoSource = asset('video/locationvideo/'.$location_details->video_file);
-        $audioSource = asset('audio/locationaudio/'.$location_details->audio_file);
+        $videoSource = ($location_details->video_file)?asset('video/locationvideo/'.$location_details->video_file):'';
+        $audioSource = ($location_details->audio_file)?asset('audio/locationaudio/'.$location_details->audio_file):'';
 
         $result = ['status' => true, 'message' => '', 'data' => $location_details,"locationsimg"=>$locationsimg, 'videoSource' => $videoSource, 'audioSource' => $audioSource];
 

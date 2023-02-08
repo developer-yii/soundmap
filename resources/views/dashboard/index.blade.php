@@ -53,17 +53,21 @@
     </div>
     <div class="col-lg-6 col-xl-5">
         <div class="nation-item2">
+            @if($vidFile)
             <div class="video-wrapper">
                <video controls width="100%" id="video">
                 <source id="videoTag" src="{{ asset('video/locationvideo/'.$vidFile) }}" type='video/mp4'/>
                 {{-- <source  src="{{ asset('video/video10.webm') }}" type='video/webm'/> --}}
                 </video>
             </div>
+            @endif
+            @if($audFile)
             <div class="audio-wrapper">
                 <audio controls id="audio">
                  <source id="audioTag" src="{{ asset('audio/locationaudio/'.$audFile) }}" type="audio/mpeg"/>
                 </audio>
-            </div>      
+            </div>     
+            @endif 
             <div class="nation-item2-list">
                 <ul>
                     <li id="locationName">{{$locName}}</li>                    

@@ -104,7 +104,21 @@ class LocationController extends Controller
 
                 }else{
 
-                $updatelocation = locations::where("id", $request->id)->first();
+                $updatelocation = locations::find($request->id);
+
+                if(($request->hasFile('audio_file') && $updatelocation->video_file) || ($request->hasFile('images') && $updatelocation->video_file))
+                {
+                    $validator->errors()->add('video_file', 'You can attach either either be an image or a video, but not both.');
+                    $result = ['status' => false, 'error' => $validator->errors(), 'data' => []];
+                    return response()->json($result);
+                }
+                else if(($request->hasFile('video_file') && $updatelocation->audio_file))
+                {
+                    $validator->errors()->add('video_file', 'You can attach either either be an image or a video, but not both.');
+                    $result = ['status' => false, 'error' => $validator->errors(), 'data' => []];
+                    return response()->json($result);
+                }
+
                 $updatelocation->location_name =$request->location_name;
                 $updatelocation->latitude = $request->latitude;
                 $updatelocation->longitude = $request->longitude;
@@ -231,21 +245,23 @@ class LocationController extends Controller
                 // "latitude" => ["required"],
                 // "longitude" => ["required", "string"],
                 "description" => ["required", "string"],
-                "audio_file" => ["required","mimes:ogg,mp3"],
-                "video_file" => ["required","mimes:mp4,ogg"],
-                "images.*" => ["required", "mimes:jpeg,jpg,png,gif"],
-                "images"    => ["required","array","min:1"],
+                "audio_file" => ["required_with:images","mimes:ogg,mp3"],
+                "video_file" => ["required_without:audio_file,images","mimes:mp4,ogg"],
+                "images.*" => ["required_with:audio_file", "mimes:jpeg,jpg,png,gif"],
+                "images"    => ["required_with:audio_file","array","min:1"],
 
             ],$customMessages);
                 if($validator->fails()){
-
-                        $result = ["status" => false,"error" => $validator->errors(),"data" => [],];
-                        return response()->json($result);
-
-                    // return redirect()->back()->withErrors($validator->errors())->withInput($request->input());
-
+                    $result = ["status" => false,"error" => $validator->errors(),"data" => [],];
+                    return response()->json($result);
                 }else{
-                    // dd($request->all());
+                        if($request->hasFile('audio_file') && $request->hasFile('video_file') && $request->file('images'))
+                        {
+                            $validator->errors()->add('video_file', 'You can attach either either be an image or a video, but not both.');
+                            $result = ['status' => false, 'error' => $validator->errors(), 'data' => []];
+                            return response()->json($result);
+                        }
+                        
                         $locations = new locations;
                         $locations->location_name = $request->location_name;
                         $locations->latitude = $request->latitude;

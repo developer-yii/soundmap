@@ -29,9 +29,9 @@ class DashboardController extends Controller
                 $location = locations::find($request->id);
 
                 if($location)
-                {   
-                    $videoSource = asset('video/locationvideo/'.$location->video_file);
-                    $audioSource = asset('audio/locationaudio/'.$location->audio_file);
+                {                       
+                    $videoSource = ($location->video_file)?asset('video/locationvideo/'.$location->video_file):'';
+                    $audioSource = ($location->audio_file)?asset('audio/locationaudio/'.$location->audio_file):'';
 
                     $result = ['status' => true, 'location' => $location, 'videoSource' => $videoSource, 'audioSource' => $audioSource];
                     return response()->json($result);
