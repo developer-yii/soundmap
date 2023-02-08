@@ -65,7 +65,7 @@ $(document).ready(function(){
 	            $('#description').html(result.data.description);
                 $('.audio_song').show();
                 $('.video_song').show();
-                console.log(result);
+
                 if(result.audioSource)
                 {
 	               $('.audio_song').html('<audio style="width: 100%;" controls><source src="'+result.audioSource+'" type="audio/ogg"></source></audio>');
@@ -161,6 +161,31 @@ $(document).ready(function(){
                     else{
                         $('.audio-wrapper').hide();
                     }
+
+                    $('#carouselExampleControls').hide();
+                    if(result.locationsimg.length)
+                    {                        
+                        $('#carouselExampleControls').show();
+                        var imgHtm = '';
+                        
+                        $.each(result.locationsimg, function(key,value) {
+                            if(key == 0)
+                            {
+                                imgHtm += '<div class="carousel-item active">';
+                                imgHtm += '<img src="'+img+'/'+value.image_path+'" class="d-block w-100" alt="...">';
+                                imgHtm += '</div>';
+                            }
+                            else
+                            {
+                                imgHtm += '<div class="carousel-item">';
+                                imgHtm += '<img src="'+img+'/'+value.image_path+'" class="d-block w-100" alt="...">';
+                                imgHtm += '</div>';
+                            }                           
+
+                            $('#imgDiv').html(imgHtm);
+                        });
+                    }
+
 
                     $('#locationName').html(result.location.location_name);
                     $('#locDescription').html(result.location.description);
