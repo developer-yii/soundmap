@@ -17,7 +17,12 @@ class DashboardController extends Controller
             $locData[]=[floatval($location->longitude),floatval($location->latitude),$location->id,'http://maps.google.com/mapfiles/ms/micons/blue.png'];
         }
 
-        return view('dashboard.index',compact('locations','locData'));
+        if(count($locations))
+        {
+            $locationsimg = \DB::table('location_image')->select('location_id','image_path','id')->whereNotNull('image_path')->where('location_id',$locations[0]->id)->whereNull('deleted_at')->get();
+        }        
+
+        return view('dashboard.index',compact('locations','locData','locationsimg'));
     }
 
     public function getLocationDetail(Request $request)
@@ -33,7 +38,9 @@ class DashboardController extends Controller
                     $videoSource = ($location->video_file)?asset('video/locationvideo/'.$location->video_file):'';
                     $audioSource = ($location->audio_file)?asset('audio/locationaudio/'.$location->audio_file):'';
 
-                    $result = ['status' => true, 'location' => $location, 'videoSource' => $videoSource, 'audioSource' => $audioSource];
+                    $locationsimg = \DB::table('location_image')->select('location_id','image_path','id')->whereNotNull('image_path')->where('location_id',$location->id)->whereNull('deleted_at')->get();
+
+                    $result = ['status' => true, 'location' => $location, 'videoSource' => $videoSource, 'audioSource' => $audioSource, 'locationsimg' => $locationsimg];
                     return response()->json($result);
                 }
                 else
