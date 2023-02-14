@@ -11,18 +11,28 @@ class DashboardController extends Controller
     {
         $locations = locations::all();        
 
-        $locData = [];
+        $locData = $locationData = [];        
 
         foreach ($locations as $key => $location) {
             $locData[]=[floatval($location->longitude),floatval($location->latitude),$location->id,'http://maps.google.com/mapfiles/ms/micons/blue.png'];
         }
+
+        foreach ($locations as $key => $location) {
+            $locData = [];
+            $locData['latitude']=floatval($location->latitude);
+            $locData['longitude']=floatval($location->longitude);
+            $locData['id']=$location->id;
+            $locData['marker']='http://maps.google.com/mapfiles/ms/micons/blue.png';
+            $locData['title']=$location->location_name;
+            $locationData[$key] = $locData;
+        }        
 
         if(count($locations))
         {
             $locationsimg = \DB::table('location_image')->select('location_id','image_path','id')->whereNotNull('image_path')->where('location_id',$locations[0]->id)->whereNull('deleted_at')->get();
         }        
 
-        return view('dashboard.index',compact('locations','locData','locationsimg'));
+        return view('dashboard.index',compact('locations','locationData','locationsimg'));
     }
 
     public function getLocationDetail(Request $request)
