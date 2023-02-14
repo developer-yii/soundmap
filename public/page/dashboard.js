@@ -1,3 +1,5 @@
+let map;
+
 function myFunction() {
     var input, filter, ul, li, a, i, txtValue;
     input = document.getElementById("myInput");
@@ -19,35 +21,104 @@ function myFunction() {
 
 $(document).ready(function(){
 
-	// Code for map
-	map = new OpenLayers.Map("map");
-    map.addLayer(new OpenLayers.Layer.OSM());
+    // Initialize the Google Map
     
-    epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
-    projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
-   
-    var lonLat = new OpenLayers.LonLat(78.8718, 21.7679).transform(epsg4326, projectTo);
-    var zoom = 5;
-    map.setCenter (lonLat, zoom);
-
-    var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
-    var places = latlongarray;
-    var features = [];
-    for (var i = 0; i < places.length; i++) {
-        var feature = new OpenLayers.Feature.Vector(
-            new OpenLayers.Geometry.Point( places[i][0], places[i][1] ).transform(epsg4326, projectTo),
-            {description:'','location_id':places[i][2]} ,
-            {externalGraphic: 'http://maps.google.com/mapfiles/ms/micons/blue.png', graphicHeight: 25, graphicWidth: 21, graphicXOffset:-12, graphicYOffset:-25  }
-        );    
-        vectorLayer.addFeatures(feature);
+    
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: {lat: 20.5937, lng: 78.9629},
+        zoom: 5,
+        mapTypeId: 'terrain'
+      });
     }
 
-    map.addLayer(vectorLayer);
+    initMap();
 
-    //Add a selector control to the vectorLayer with popup functions
-    var controls = {
-      selector: new OpenLayers.Control.SelectFeature(vectorLayer, { onSelect: createPopup, onUnselect: destroyPopup })
-    };
+    $.each(latlongarray, function(index, location) {
+        var marker = new google.maps.Marker({
+            position: {lat: location.latitude, lng: location.longitude},
+            map: map,
+            marker: location.marker,
+            title: location.title,
+            id: location.id
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+            handleMarkerClick(marker.id);
+        });
+    });
+
+    // Handle the marker click event
+    function handleMarkerClick(markerId) {                
+        $.ajax({
+            url: detailUrl,
+            type: 'GET',
+            data: {id:markerId},
+            dataType: 'json',
+            success: function(result) {
+                // controls['selector'].unselectAll();
+                $('#location-modal').modal('show');
+                $('#location_name').html(result.data.location_name);  
+                $('#latitude').html(result.data.latitude);  
+                $('#longitude').html(result.data.longitude);  
+                $('#description').html(result.data.description);
+                $('.audio_song').show();
+                $('.video_song').show();
+
+                if(result.audioSource)
+                {
+                   $('.audio_song').html('<audio style="width: 100%;" controls><source src="'+result.audioSource+'" type="audio/ogg"></source></audio>');
+                }
+                else{
+                    $('.audio_song').hide();
+                }
+                if(result.videoSource){
+                   $('.video_song').html('<video style="width: 100%;" controls><source src="'+result.videoSource+'" type="video/ogg"></source></video>');
+                }
+                else{
+                    $('.video_song').hide('');
+                }
+                $('#images').html('');            
+
+                $.each(result.locationsimg, function(key,value) {
+                  $('#images').append('<a href="'+img+'/'+value.image_path+'" class="image-popup"><img src="'+img+'/'+value.image_path+'" class="modal-image" /></a>');  
+                });       
+
+                initMagnific();                        
+
+            }
+        });
+    }
+
+	// Code for map
+	// map = new OpenLayers.Map("map");
+    // map.addLayer(new OpenLayers.Layer.OSM());
+    
+    // epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
+    // projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
+   
+    // var lonLat = new OpenLayers.LonLat(78.8718, 21.7679).transform(epsg4326, projectTo);
+    // var zoom = 5;
+    // map.setCenter (lonLat, zoom);
+
+    // var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
+    // var places = latlongarray;
+    // var features = [];
+    // for (var i = 0; i < places.length; i++) {
+    //     var feature = new OpenLayers.Feature.Vector(
+    //         new OpenLayers.Geometry.Point( places[i][0], places[i][1] ).transform(epsg4326, projectTo),
+    //         {description:'','location_id':places[i][2]} ,
+    //         {externalGraphic: 'http://maps.google.com/mapfiles/ms/micons/blue.png', graphicHeight: 25, graphicWidth: 21, graphicXOffset:-12, graphicYOffset:-25  }
+    //     );    
+    //     vectorLayer.addFeatures(feature);
+    // }
+
+    // map.addLayer(vectorLayer);
+
+    // //Add a selector control to the vectorLayer with popup functions
+    // var controls = {
+    //   selector: new OpenLayers.Control.SelectFeature(vectorLayer, { onSelect: createPopup, onUnselect: destroyPopup })
+    // };
 
     function createPopup(feature) {
 		var id =feature.attributes.location_id;
@@ -115,8 +186,8 @@ $(document).ready(function(){
 		
 	}
 
-    map.addControl(controls['selector']);
-    controls['selector'].activate();
+    // map.addControl(controls['selector']);
+    // controls['selector'].activate();
 
     // Map code ends
 

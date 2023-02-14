@@ -80,6 +80,11 @@
         <!--Open Layers-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script>
 
+        <!-- Google Maps -->
+        <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiKmRh2vEg2hiV1ZIVeyNlxPjVegpChvE&amp;libraries=places&amp;callback=initMap"
+        async="" defer=""></script>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" integrity="sha512-IsNh5E3eYy3tr/JiX2Yx4vsCujtkhwl7SLqgnwLNgf04Hrt9BT9SXlLlZlWx+OK4ndzAoALhsMNcCmkggjZB1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script>
@@ -88,6 +93,13 @@
                     $('.alert').fadeOut()
                 },3000);
             })
+            function initMap() {
+              map = new google.maps.Map(document.getElementById("map"), {
+                center: {lat: 20.5937, lng: 78.9629},
+                zoom: 5,
+                mapTypeId: 'terrain'
+              });
+            }
         </script>
         @yield('js')
         @yield('pagejs')

@@ -176,7 +176,7 @@
 
 @section('js')
 <script>
-    var latlongarray = <?php echo json_encode($locData); ?>;
+    var latlongarray = <?php echo json_encode($locationData); ?>;
  	var detailUrl = "{{ route('map.detail') }}";
 	var audio= "{{asset('audio/locationaudio/')}}";
 	var video= "{{asset('video/locationvideo/')}}";
