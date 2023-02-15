@@ -21,31 +21,50 @@ function myFunction() {
 
 $(document).ready(function(){
 
-    // Initialize the Google Map
-    
-    
-    function initMap() {
-      map = new google.maps.Map(document.getElementById("map"), {
-        center: {lat: 20.5937, lng: 78.9629},
-        zoom: 5,
-        mapTypeId: 'terrain'
-      });
-    }
-
+    // Initialize the Google Map      
+   
     initMap();
+
+    var markers = [];
+    var lastClickedMarker = null;
 
     $.each(latlongarray, function(index, location) {
         var marker = new google.maps.Marker({
             position: {lat: location.latitude, lng: location.longitude},
             map: map,
-            marker: location.marker,
+            icon: location.marker,
             title: location.title,
             id: location.id
+        });       
+
+        marker.addListener('click', function() {
+            if (lastClickedMarker != null) {
+                // Reset the previously clicked marker to its default state
+                lastClickedMarker.setIcon('http://maps.google.com/mapfiles/ms/micons/blue.png');
+            }
+            
+            handleMarkerClick(marker.id);
+        
+            // Zoom and center the map on the marker's position            
+            map.panTo(marker.getPosition(),{animate: true});
+            map.setZoom(15, {animate: true});
+
+            // Change the marker's color
+            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');                
+
+            // Set the clicked property to true
+            lastClickedMarker = marker;
+
+            // Set the clicked property to true
+            marker.clicked = true;                        
         });
 
-        google.maps.event.addListener(marker, 'click', function() {
-            handleMarkerClick(marker.id);
-        });
+        markers.push(marker);        
+    });
+
+    // Create a MarkerClusterer object and pass the array of markers to it
+    var markerCluster = new MarkerClusterer(map, markers, {
+        imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
     });
 
     // Handle the marker click event
