@@ -1,5 +1,9 @@
 @extends('layouts.web')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/page/dashboard.css') }}?{{time()}}" />
+@endsection
+
 @section('content')
 <div class="row">
     <div class="col-lg-6 col-xl-2">

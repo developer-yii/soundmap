@@ -1,4 +1,3 @@
-let map;
 
 function myFunction() {
     var input, filter, ul, li, a, i, txtValue;
@@ -36,9 +35,10 @@ $(document).ready(function(){
     initMap();
 
     var markers = [];
+    var popup;
     var lastClickedMarker = null;
 
-    var infoWindow = new google.maps.InfoWindow();
+    // var infoWindow = new google.maps.InfoWindow();
 
     $.each(latlongarray, function(index, location) {
         var marker = new google.maps.Marker({
@@ -113,11 +113,17 @@ $(document).ready(function(){
                 
                 '</div>';
             
-             // Set the InfoWindow content
-            infoWindow.setContent(contentString);            
+            // Set the InfoWindow content
+            popup = new Popup(
+                new google.maps.LatLng(-33.866, 151.196),
+                contentString
+              );
+            popup.setMap(map);
+            
+            // infoBoxe.content(contentString);            
 
             // Open the InfoWindow
-            infoWindow.open(map, marker);
+            popup.open(map, marker);
 
 
             // Set the map to full screen mode
@@ -147,13 +153,13 @@ $(document).ready(function(){
         markers.push(marker);                
     });
 
-    google.maps.event.addListener(infoWindow, 'domready', function() {
+    google.maps.event.addListener(popup, 'domready', function() {
         // Get the InfoWindow's content container element
-        var iwContainer = $('.gm-style-iw');
+        // var iwContainer = $('.gm-style-iw');
         // Get the content element
-        var iwContent = iwContainer.children(':first');
+        // var iwContent = iwContainer.children(':first');
         // Apply the minimum width property
-        iwContent.css('max-width', '300px');
+        // iwContent.css('max-width', '300px');
     });
 
 

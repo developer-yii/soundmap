@@ -192,8 +192,10 @@ label {
   border: 1px solid;
 }
 .mfp-bg, .mfp-wrap{
-  z-index: 1090!important;
+/*  z-index: 1090!important;*/
+  z-index: 10090!important;
 }
 .mfp-content{
- z-index: 1092!important; 
+/* z-index: 1092!important; */
+ z-index: 10092!important; 
 }
