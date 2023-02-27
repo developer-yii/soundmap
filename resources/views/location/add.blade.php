@@ -85,6 +85,9 @@
             </div>
             </form>
          </div>
+         <div class="w-50 float-end">
+            <div id="map" style="width:450px; height:450px;margin-left:15px;margin-bottom:10px;"></div>
+         </div>
       </div>
    </div>
 </div>
@@ -94,9 +97,18 @@
 @section('pagejs')
 <script>
    var apiUrl = "{{ route('location.list') }}"; 
-   var createlocationUrl = "{{ route('location.add') }}"; 
-</script>
+   var createlocationUrl = "{{ route('location.add') }}";
+   var geo_counter = 0; 
+   var map;
+   var pos;
 
+</script>
+<!-- Google Maps -->
+<script
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiKmRh2vEg2hiV1ZIVeyNlxPjVegpChvE&amp;libraries=places&amp;callback=initMap"
+async defer></script>
+
+<script src="{{asset('/')}}page/gmap.js?{{cacheclear()}}"></script>
 <script src="{{asset('/')}}page/locationdetail.js?{{cacheclear()}}"></script>
 
 @endsection

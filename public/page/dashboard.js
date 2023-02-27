@@ -1,5 +1,17 @@
 let map;
 
+if(vidFile)
+{
+    $('.video-wrapper').show();
+    $('#carouselExampleControls').hide();
+    $('.audio-wrapper').hide();
+}
+else if(locImgCount){
+    $('.video-wrapper').hide();
+    $('#carouselExampleControls').show();
+    $('.audio-wrapper').show();   
+}
+
 function myFunction() {
     var input, filter, ul, li, a, i, txtValue;
     input = document.getElementById("myInput");
@@ -48,6 +60,11 @@ $(document).ready(function(){
             title: location.title,
             id: location.id
         });       
+
+        // check if the map is in full screen mode
+        function isMapFullScreen() {
+          return (window.innerHeight == screen.height);
+        }
 
         marker.addListener('click', function() {
             if (lastClickedMarker != null) {
@@ -117,7 +134,9 @@ $(document).ready(function(){
             infoWindow.setContent(contentString);            
 
             // Open the InfoWindow
-            infoWindow.open(map, marker);
+            if (isMapFullScreen()) {
+                infoWindow.open(map, marker);
+            }
 
 
             // Set the map to full screen mode
@@ -306,6 +325,55 @@ $(document).ready(function(){
 
     // Map code ends
 
+
+    // Auto Play code starts   
+
+    // Set the index of the currently playing media element to 0
+    // const currentMediaIndex = 0;
+
+    // Define a function that will play the next media element in the array
+    function playNextMedia(currentMediaIndex) {    
+        console.log('playNextMedia');     
+
+        var curruntLi = $("#myUL li a[data-id='"+currentMediaIndex+"']").parent();
+        let nexiLi = curruntLi.next('li');
+        nexiLi.find('a').click();
+
+        // for (let i = 0; i < lis.length; i++) {
+        //   const li = lis[i];
+        //   const dataId = parseInt(li.querySelector(".locationName").getAttribute("data-id"), 10);      
+        //   console.log('dataid:' +dataId);
+        //   if (dataId == currentMediaIndex) {
+        //     if (i < lis.length - 1) {
+        //         nextDataId = parseInt(lis[i + 1].querySelector(".locationName").getAttribute("data-id"), 10);          
+        //         console.log('nextDataId:'+nextDataId);                
+        //         const nextListItem = $('#myUL li');
+        //         const nextLink = nextListItem.find('a[data-id='+nextDataId+']');
+        //         nextLink.trigger('click');
+        //       break;
+        //     }
+        //     break;
+        //   }
+        // }             
+
+        return false;
+        
+    }
+
+    // Add click event listeners to the <a> elements to play the corresponding media file
+    $('#myUL a').click(function() {    
+        console.log('clicked');
+        console.log(currentMediaIndex);
+      const mediaElement = $(`.nation-item-container`).find('audio, video');           
+
+      var currentMediaIndex = $(this).attr('data-id'); 
+      
+      mediaElement.on('ended', function(){
+        playNextMedia(currentMediaIndex)
+    });
+      return;
+    });
+
 	$(document).on('click','.locationName', function(e){
 		e.preventDefault();
 		var placeId = $(this).attr('data-id');		
@@ -324,12 +392,13 @@ $(document).ready(function(){
                 if (result.status == true) {         
                     $('.video-wrapper').show();
                     if(result.videoSource)
-                    {                        
-                    	video = $("#video").get(0);
+                    {                    
+                        video = $("#video").get(0);
                     	video1 = $("#videoTag")[0];                	
                     	video1.src = result.videoSource;       
                     	video.pause();
-                    	video.load();                    
+                    	video.load();
+                        video.play();                    
                     }
                     else{
                         $('.video-wrapper').hide();
@@ -343,6 +412,7 @@ $(document).ready(function(){
                     	audio1.src = result.audioSource;       
                     	audio.pause();
                     	audio.load();
+                        audio.play();                    
                     }
                     else{
                         $('.audio-wrapper').hide();
@@ -376,6 +446,34 @@ $(document).ready(function(){
                     $('#locationName').html(result.location.location_name);
                     $('#locDescription').html(result.location.description);
                     $('#location').html(result.location.latitude+' '+result.location.longitude);
+
+                    
+                    // if(result.audioSource)
+                    // {
+                    //     var mediaElement = $(`.nation-item-container`).find('audio');
+                    //     console.log('if');
+                    //     var currentMediaIndex = $this.attr('data-id'); 
+
+                    //     console.log(currentMediaIndex);
+                          
+                    //     mediaElement.on('ended',function(){
+                    //         playNextMedia(currentMediaIndex);
+                    //     })
+                    // }
+                    // else
+                    // {
+                    //     var mediaElement = $(`.nation-item-container`).find('video');
+                    //     console.log('else');
+
+                    //     var currentMediaIndex = $this.attr('data-id');                         
+                    //     console.log(currentMediaIndex);
+                          
+                    //     mediaElement.on('ended',function(){
+                    //         playNextMedia(currentMediaIndex);
+                    //     })
+                    // }
+
+
                 } else {
                     showFlash(result.message, 'error');
                 }
