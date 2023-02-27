@@ -1,5 +1,9 @@
 @extends('layouts.web')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/page/dashboard.css') }}?{{time()}}" />
+@endsection
+
 @section('content')
 <div class="row">
     <div class="col-lg-6 col-xl-2">
@@ -51,19 +55,19 @@
             </div>              
         </div>
     </div>
-    <div class="col-lg-6 col-xl-5">
+    <div class="col-lg-6 col-xl-5 nation-item-container position-relative">
         <div class="nation-item2">
-            @if($vidFile)
-            <div class="video-wrapper">
+            {{-- @if($vidFile) --}}
+            <div class="video-wrapper" style="display: none;">
                <video controls width="100%" id="video">
                 <source id="videoTag" src="{{ asset('video/locationvideo/'.$vidFile) }}" type='video/mp4'/>
                 {{-- <source  src="{{ asset('video/video10.webm') }}" type='video/webm'/> --}}
                 </video>
             </div>
-            @endif
-            @if(count($locationsimg))
-            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-              <div class="carousel-inner" id="imgDiv">
+            {{-- @endif --}}
+            {{-- @if(count($locationsimg)) --}}
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" style="display: none;">
+              <div class="carousel-inner d-flex align-items-center" id="imgDiv" style="height: 400px;">
                 @foreach($locationsimg as $key => $img)
                     <div class="carousel-item {{($key == 0 ) ? "active" : ""}}">
                       <img src="{{asset('images/locationimage').'/'.$img->image_path}}" class="d-block w-100" alt="...">
@@ -79,14 +83,16 @@
                 <span class="visually-hidden">Next</span>
               </button>
             </div>
-            @endif
-            @if($audFile)
-            <div class="audio-wrapper">
+            {{-- @endif --}}
+            {{-- @if($audFile) --}}
+            <div class="audio-wrapper" style="display: none;">
                 <audio controls id="audio">
                  <source id="audioTag" src="{{ asset('audio/locationaudio/'.$audFile) }}" type="audio/mpeg"/>
                 </audio>
             </div>     
-            @endif 
+            {{-- @endif --}}
+        </div> 
+        <div class="nation-item2-desc">
             <div class="nation-item2-list">
                 <ul>
                     <li id="locationName">{{$locName}}</li>                    
@@ -182,6 +188,9 @@
 	var video= "{{asset('video/locationvideo/')}}";
 	var img= "{{asset('images/locationimage')}}";
     var getDetailUrl = "{{ route('dashboard.location.detail') }}";
+    var vidFile = "{{ $vidFile }}";
+    var locImgCount = "{{ count($locationsimg) }}";
+    var audFile = "{{ $audFile }}";
 </script>
 @endsection
 

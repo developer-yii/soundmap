@@ -56,13 +56,30 @@ label {
 }
 
 /*==THIS IS START==*/
-.nation-item1, .nation-item3 {
+.nation-item1 {
   position: sticky;
   height: 100vh;
   overflow-y: scroll;
   top: 0;
   -ms-overflow-style: none;  
   scrollbar-width: none;  
+}
+.nation-item3 {
+  position: sticky;
+  height: 100vh;
+/*  overflow-y: scroll;*/
+  top: 0;
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+}
+
+.nation-item2 {
+    position: sticky;
+    top: 0;
+    left: 0;
+    
+    overflow: hidden;
+    background: #fff;
 }
 
 .nation-item1::-webkit-scrollbar {
@@ -192,8 +209,23 @@ label {
   border: 1px solid;
 }
 .mfp-bg, .mfp-wrap{
-  z-index: 1090!important;
+/*  z-index: 1090!important;*/
+  z-index: 10090!important;
 }
 .mfp-content{
- z-index: 1092!important; 
+/* z-index: 1092!important; */
+ z-index: 10092!important; 
+}
+.carousel-item {  
+/*  align-items: center!important;*/
+  height: 100%!important;
+}
+.carousel-item img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  background-color: #fff;
+}
+.carousel-control-prev-icon,.carousel-control-next-icon{
+  filter: invert(90%);
 }
