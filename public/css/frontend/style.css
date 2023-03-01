@@ -229,3 +229,9 @@ label {
 .carousel-control-prev-icon,.carousel-control-next-icon{
   filter: invert(90%);
 }
+
+.nation-item2-desc {
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: none;
+}

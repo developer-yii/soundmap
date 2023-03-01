@@ -71,70 +71,75 @@ $(document).ready(function(){
                 // Reset the previously clicked marker to its default state
                 lastClickedMarker.setIcon('http://maps.google.com/mapfiles/ms/micons/blue.png');
             }
-
+            
             var locationData = getData(marker.id);
             var locationData = locationData.responseJSON;
-
-            var htm = '';
-            if(locationData.locationsimg.length)
-            {                
-                htm += '<div id="carouselExampleControls1" class="carousel slide" data-bs-ride="carousel">';
-                htm += '<div class="carousel-inner" id="imgDiv">';
-                    
-                    $.each(locationData.locationsimg, function(key,value) {
-                        if(key == 0)
-                            htm += '<div class="carousel-item active">';
-                        else
-                            htm += '<div class="carousel-item">';
-
-                        htm += '<img src="'+img+'/'+value.image_path+'" class="d-block w-100"></div>';
-                    });                   
-                          
-                htm += '</div>';
-              htm += '<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls1" data-bs-slide="prev">';
-                htm += '<span class="carousel-control-prev-icon" aria-hidden="true"></span>';
-                htm += '<span class="visually-hidden">Previous</span>';
-              htm += '</button>';
-              htm += '<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls1" data-bs-slide="next">'+
-                '<span class="carousel-control-next-icon" aria-hidden="true"></span>'+
-                '<span class="visually-hidden">Next</span>'+
-              '</button>'+
-            '</div>';
-            }
-
-            var videofile = '';
-            if(locationData.videoSource)
+            // var isMapFullScreen = isMapFullScreen();
+            if(!isMapFullScreen())
             {
-                videofile += '<div class="video_song mb-2">'+
-                '<video style="width: 100%;" controls><source src="'+locationData.videoSource+'" type="video/ogg"></source></video></div>';
+                $('.nation-item1-list #myUL').find('li a[data-id="'+marker.id+'"]').trigger('click');
             }
-
-            var audiofile = '';
-            
-            if(locationData.audioSource)
-            {
-                audiofile += '<div class="audio_song mb-2">'+
-                '<audio style="width: 100%;" controls><source src="'+locationData.audioSource+'" type="audio/ogg"></source></audio></div>';
-            }            
-
-            var contentString = '<div class="info-window">' +
-                '<div class="info-window-images mb-2">' +                 
-                    htm +                
-                '</div>' +
-                    videofile + audiofile +
-                '<h6>' + locationData.data.location_name + '</h6>' +                
-                '<p>' + locationData.data.latitude + ' ' + locationData.data.longitude + '</p>' +                
-                '<div class="info-window-content">' +                
-                    locationData.data.description +
-                '</div>' +
-                
-                '</div>';
-            
-             // Set the InfoWindow content
-            infoWindow.setContent(contentString);            
 
             // Open the InfoWindow
             if (isMapFullScreen()) {
+                var htm = '';
+                if(locationData.locationsimg.length)
+                {                
+                    htm += '<div id="carouselExampleControls1" class="carousel slide" data-bs-ride="carousel">';
+                    htm += '<div class="carousel-inner" id="imgDiv">';
+                        
+                        $.each(locationData.locationsimg, function(key,value) {
+                            if(key == 0)
+                                htm += '<div class="carousel-item active">';
+                            else
+                                htm += '<div class="carousel-item">';
+
+                            htm += '<img src="'+img+'/'+value.image_path+'" class="d-block w-100"></div>';
+                        });                   
+                              
+                    htm += '</div>';
+                  htm += '<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls1" data-bs-slide="prev">';
+                    htm += '<span class="carousel-control-prev-icon" aria-hidden="true"></span>';
+                    htm += '<span class="visually-hidden">Previous</span>';
+                  htm += '</button>';
+                  htm += '<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls1" data-bs-slide="next">'+
+                    '<span class="carousel-control-next-icon" aria-hidden="true"></span>'+
+                    '<span class="visually-hidden">Next</span>'+
+                  '</button>'+
+                '</div>';
+                }
+
+                var videofile = '';
+                if(locationData.videoSource)
+                {
+                    videofile += '<div class="video_song mb-2">'+
+                    '<video style="width: 100%;" controls><source src="'+locationData.videoSource+'" type="video/ogg"></source></video></div>';
+                }
+
+                var audiofile = '';
+                
+                if(locationData.audioSource)
+                {
+                    audiofile += '<div class="audio_song mb-2">'+
+                    '<audio style="width: 100%;" controls><source src="'+locationData.audioSource+'" type="audio/ogg"></source></audio></div>';
+                }            
+
+                var contentString = '<div class="info-window">' +
+                    '<div class="info-window-images mb-2">' +                 
+                        htm +                
+                    '</div>' +
+                        videofile + audiofile +
+                    '<h6>' + locationData.data.location_name + '</h6>' +                
+                    '<p>' + locationData.data.latitude + ' ' + locationData.data.longitude + '</p>' +                
+                    '<div class="info-window-content">' +                
+                        locationData.data.description +
+                    '</div>' +
+                    
+                    '</div>';
+                
+                 // Set the InfoWindow content
+                infoWindow.setContent(contentString);
+            
                 infoWindow.open(map, marker);
             }
 
@@ -483,5 +488,9 @@ $(document).ready(function(){
             }
         });
 	})
+    
+    $('.nation-item2-desc').css('height', 'calc(100vh - '+($('.nation-item2').height()+10)+'px)');
+    $('.nation-item2-desc').css('display', 'block');
 
 });
+
