@@ -381,6 +381,7 @@ $(document).ready(function(){
 
 	$(document).on('click','.locationName', function(e){
 		e.preventDefault();
+        $('.nation-item2-desc').css('display', 'none');
 		var placeId = $(this).attr('data-id');		
 		$this = $(this);
 
@@ -452,7 +453,9 @@ $(document).ready(function(){
                     $('#locDescription').html(result.location.description);
                     $('#location').html(result.location.latitude+' '+result.location.longitude);
 
-                    
+                    $('.nation-item2-desc').css('height', 'calc(100vh - '+($('.nation-item2').height()+10)+'px)');
+                    $('.nation-item2-desc').css('display', 'block');
+
                     // if(result.audioSource)
                     // {
                     //     var mediaElement = $(`.nation-item-container`).find('audio');
@@ -489,6 +492,7 @@ $(document).ready(function(){
         });
 	})
     
+
     $('.nation-item2-desc').css('height', 'calc(100vh - '+($('.nation-item2').height()+10)+'px)');
     $('.nation-item2-desc').css('display', 'block');
 
