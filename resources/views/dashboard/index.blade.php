@@ -55,17 +55,18 @@
             </div>              
         </div>
     </div>
+    
     <div class="col-lg-6 col-xl-5 nation-item-container position-relative">
         <div class="nation-item2">
-            {{-- @if($vidFile) --}}
+            <div class="hidden_link"></div>
             <div class="video-wrapper" style="display: none;">
-               <video controls width="100%" id="video">
-                <source id="videoTag" src="{{ asset('video/locationvideo/'.$vidFile) }}" type='video/mp4'/>
-                {{-- <source  src="{{ asset('video/video10.webm') }}" type='video/webm'/> --}}
+                @if(!empty($vidFile))
+               <video controls width="100%" id="video" autoplay="true">
+                <source id="videoTag" src="{{  asset('video/locationvideo/'.$vidFile) }}" type='video/mp4'/>
                 </video>
+                @endif
             </div>
-            {{-- @endif --}}
-            {{-- @if(count($locationsimg)) --}}
+            
             <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" style="display: none;">
               <div class="carousel-inner d-flex align-items-center" id="imgDiv" style="height: 400px;">
                 @foreach($locationsimg as $key => $img)
@@ -83,14 +84,14 @@
                 <span class="visually-hidden">Next</span>
               </button>
             </div>
-            {{-- @endif --}}
-            {{-- @if($audFile) --}}
+            
             <div class="audio-wrapper" style="display: none;">
-                <audio controls id="audio">
+                @if(!empty($audFile))
+                <audio controls autoplay id="audio">
                  <source id="audioTag" src="{{ asset('audio/locationaudio/'.$audFile) }}" type="audio/mpeg"/>
                 </audio>
+                @endif
             </div>     
-            {{-- @endif --}}
         </div> 
         <div class="nation-item2-desc">
             <div class="nation-item2-list">
@@ -191,6 +192,8 @@
     var vidFile = "{{ $vidFile }}";
     var locImgCount = "{{ count($locationsimg) }}";
     var audFile = "{{ $audFile }}";
+    var videopath = "{{ asset('video/locationvideo') }}";
+    var audiopath = "{{ asset('audio/locationaudio') }}";
 </script>
 @endsection
 

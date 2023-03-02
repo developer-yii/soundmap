@@ -144,16 +144,6 @@ $(document).ready(function(){
             }
 
 
-            // Set the map to full screen mode
-            // map.setOptions({
-            //   fullscreenControl: true,
-            //   fullscreenControlOptions: {
-            //     position: google.maps.ControlPosition.TOP_RIGHT
-            //   }
-            // });
-            
-            // handleMarkerClick(marker.id);
-        
             // Zoom and center the map on the marker's position            
             map.panTo(marker.getPosition(),{animate: true});
             map.setZoom(15, {animate: true});
@@ -229,37 +219,7 @@ $(document).ready(function(){
         });
     }
 
-	// Code for map
-	// map = new OpenLayers.Map("map");
-    // map.addLayer(new OpenLayers.Layer.OSM());
-    
-    // epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
-    // projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
-   
-    // var lonLat = new OpenLayers.LonLat(78.8718, 21.7679).transform(epsg4326, projectTo);
-    // var zoom = 5;
-    // map.setCenter (lonLat, zoom);
-
-    // var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
-    // var places = latlongarray;
-    // var features = [];
-    // for (var i = 0; i < places.length; i++) {
-    //     var feature = new OpenLayers.Feature.Vector(
-    //         new OpenLayers.Geometry.Point( places[i][0], places[i][1] ).transform(epsg4326, projectTo),
-    //         {description:'','location_id':places[i][2]} ,
-    //         {externalGraphic: 'http://maps.google.com/mapfiles/ms/micons/blue.png', graphicHeight: 25, graphicWidth: 21, graphicXOffset:-12, graphicYOffset:-25  }
-    //     );    
-    //     vectorLayer.addFeatures(feature);
-    // }
-
-    // map.addLayer(vectorLayer);
-
-    // //Add a selector control to the vectorLayer with popup functions
-    // var controls = {
-    //   selector: new OpenLayers.Control.SelectFeature(vectorLayer, { onSelect: createPopup, onUnselect: destroyPopup })
-    // };
-
-    function createPopup(feature) {
+	function createPopup(feature) {
 		var id =feature.attributes.location_id;
 	    $.ajax({
 	        url: detailUrl,
@@ -325,61 +285,16 @@ $(document).ready(function(){
 		
 	}
 
-    // map.addControl(controls['selector']);
-    // controls['selector'].activate();
-
-    // Map code ends
-
-
-    // Auto Play code starts   
-
-    // Set the index of the currently playing media element to 0
-    // const currentMediaIndex = 0;
-
     // Define a function that will play the next media element in the array
     function playNextMedia(currentMediaIndex) {    
-        console.log('playNextMedia');     
-
         var curruntLi = $("#myUL li a[data-id='"+currentMediaIndex+"']").parent();
         let nexiLi = curruntLi.next('li');
         nexiLi.find('a').click();
-
-        // for (let i = 0; i < lis.length; i++) {
-        //   const li = lis[i];
-        //   const dataId = parseInt(li.querySelector(".locationName").getAttribute("data-id"), 10);      
-        //   console.log('dataid:' +dataId);
-        //   if (dataId == currentMediaIndex) {
-        //     if (i < lis.length - 1) {
-        //         nextDataId = parseInt(lis[i + 1].querySelector(".locationName").getAttribute("data-id"), 10);          
-        //         console.log('nextDataId:'+nextDataId);                
-        //         const nextListItem = $('#myUL li');
-        //         const nextLink = nextListItem.find('a[data-id='+nextDataId+']');
-        //         nextLink.trigger('click');
-        //       break;
-        //     }
-        //     break;
-        //   }
-        // }             
-
         return false;
-        
     }
 
-    // Add click event listeners to the <a> elements to play the corresponding media file
-    $('#myUL a').click(function() {    
-        console.log('clicked');
-        console.log(currentMediaIndex);
-      const mediaElement = $(`.nation-item-container`).find('audio, video');           
 
-      var currentMediaIndex = $(this).attr('data-id'); 
-      
-      mediaElement.on('ended', function(){
-        playNextMedia(currentMediaIndex)
-    });
-      return;
-    });
-
-	$(document).on('click','.locationName', function(e){
+    $(document).on('click','.locationName', function(e){
 		e.preventDefault();
         $('.nation-item2-desc').css('display', 'none');
 		var placeId = $(this).attr('data-id');		
@@ -396,15 +311,30 @@ $(document).ready(function(){
             dataType: 'json',
             success: function(result) {
                 if (result.status == true) {         
+                    $('.video-wrapper').find('video').remove();
+                    $('.audio-wrapper').find('audio').remove();
+
                     $('.video-wrapper').show();
                     if(result.videoSource)
-                    {                    
+                    {
+                        $('.video-wrapper').html('<video controls width="100%" id="video">'+
+                            '<source id="videoTag" src="'+result.videoSource+'" type="video/mp4"/>'+
+                            '</video>');
+                        
                         video = $("#video").get(0);
-                    	video1 = $("#videoTag")[0];                	
-                    	video1.src = result.videoSource;       
+                    	// video1 = $("#videoTag")[0];                	
+                    	// video1.src = result.videoSource;       
                     	video.pause();
                     	video.load();
-                        video.play();                    
+                        video.play();
+
+                        const mediaElement = $(`.nation-item-container`).find('audio, video');
+                        
+                        mediaElement.on('ended', function(){
+                            console.log('ended');
+                            console.log(placeId);
+                            playNextMedia(placeId);
+                        });
                     }
                     else{
                         $('.video-wrapper').hide();
@@ -413,12 +343,21 @@ $(document).ready(function(){
                     $('.audio-wrapper').show();
                     if(result.audioSource)
                     {
+                        $('.audio-wrapper').html('<audio controls width="100%" id="audio">'+
+                            '<source id="audioTag" src="'+result.audioSource+'" type="audio/mpeg"/>'+
+                            '</audio>');
+
                         audio = $("#audio").get(0);
-                    	audio1 = $("#audioTag")[0];                	
-                    	audio1.src = result.audioSource;       
+                    	// audio1 = $("#audioTag")[0];                	
+                    	// audio1.src = result.audioSource;       
                     	audio.pause();
                     	audio.load();
-                        audio.play();                    
+                        audio.play();
+                        var mediaElement = $(`.nation-item-container`).find('audio, video');
+
+                        mediaElement.on('ended', function(){
+                            playNextMedia(placeId);
+                        });
                     }
                     else{
                         $('.audio-wrapper').hide();
@@ -453,35 +392,10 @@ $(document).ready(function(){
                     $('#locDescription').html(result.location.description);
                     $('#location').html(result.location.latitude+' '+result.location.longitude);
 
-                    $('.nation-item2-desc').css('height', 'calc(100vh - '+($('.nation-item2').height()+10)+'px)');
-                    $('.nation-item2-desc').css('display', 'block');
-
-                    // if(result.audioSource)
-                    // {
-                    //     var mediaElement = $(`.nation-item-container`).find('audio');
-                    //     console.log('if');
-                    //     var currentMediaIndex = $this.attr('data-id'); 
-
-                    //     console.log(currentMediaIndex);
-                          
-                    //     mediaElement.on('ended',function(){
-                    //         playNextMedia(currentMediaIndex);
-                    //     })
-                    // }
-                    // else
-                    // {
-                    //     var mediaElement = $(`.nation-item-container`).find('video');
-                    //     console.log('else');
-
-                    //     var currentMediaIndex = $this.attr('data-id');                         
-                    //     console.log(currentMediaIndex);
-                          
-                    //     mediaElement.on('ended',function(){
-                    //         playNextMedia(currentMediaIndex);
-                    //     })
-                    // }
-
-
+                    setTimeout(function(){
+                        $('.nation-item2-desc').css('height', 'calc(100vh - '+($('.nation-item2').height()+10)+'px)');
+                        $('.nation-item2-desc').css('display', 'block');
+                    },100);
                 } else {
                     showFlash(result.message, 'error');
                 }
@@ -496,5 +410,12 @@ $(document).ready(function(){
     $('.nation-item2-desc').css('height', 'calc(100vh - '+($('.nation-item2').height()+10)+'px)');
     $('.nation-item2-desc').css('display', 'block');
 
-});
+    var mediaElement = $(`.nation-item-container`).find('audio, video');
 
+    mediaElement.on('ended', function(){
+        console.log('ended');
+        console.log($('#myUL').find('li:first').find('a').attr('data-id'));
+        playNextMedia($('#myUL').find('li:first').find('a').attr('data-id'));
+    });
+
+});
