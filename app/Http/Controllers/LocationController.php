@@ -106,15 +106,20 @@ class LocationController extends Controller
 
                 $updatelocation = locations::find($request->id);
 
+                // echo '<pre>';
+                // print_r($request->hasFile('audio_file'));
+                // print_r($request->hasFile('audio_file'));
+                // print_r($request->hasFile('audio_file'));
+
                 if(($request->hasFile('audio_file') && $updatelocation->video_file) || ($request->hasFile('images') && $updatelocation->video_file))
                 {
-                    $validator->errors()->add('video_file', 'You can attach either either be an image or a video, but not both.');
+                    $validator->errors()->add('video_file', 'You can attach images & audio OR a video');
                     $result = ['status' => false, 'error' => $validator->errors(), 'data' => []];
                     return response()->json($result);
                 }
                 else if(($request->hasFile('video_file') && $updatelocation->audio_file))
                 {
-                    $validator->errors()->add('video_file', 'You can attach either either be an image or a video, but not both.');
+                    $validator->errors()->add('video_file', 'You can attach images & audio OR a video');
                     $result = ['status' => false, 'error' => $validator->errors(), 'data' => []];
                     return response()->json($result);
                 }
@@ -219,6 +224,37 @@ class LocationController extends Controller
         
         return response()->json($result);
     }
+
+    public function deletevideo(Request $request){
+        $location = locations::where("id", $request->id)->first();
+        $path = public_path('video/locationvideo/'.$location->video_file);
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        $location->video_file = null;
+        if($location->save()){
+            $result = ['status' => true, 'message' => 'Video delete successfully'];
+        }else{
+            $result = ['status' => false, 'message' => 'Video delete fail'];
+        }
+        return response()->json($result);
+    }
+
+    public function deleteaudio(Request $request){
+        $location = locations::where("id", $request->id)->first();
+        $path = public_path('audio/locationaudio/'.$location->audio_file);
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        $location->audio_file = null;
+        if($location->save()){
+            $result = ['status' => true, 'message' => 'Audio delete successfully'];
+        }else{
+            $result = ['status' => false, 'message' => 'Audio delete fail'];
+        }
+        return response()->json($result);
+    }
+    
 
      public function add(Request $request){
         

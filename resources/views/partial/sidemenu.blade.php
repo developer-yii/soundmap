@@ -28,7 +28,7 @@
             <li class="side-nav-item">
                 <a href="{{route('location')}}" class="side-nav-link">
                     <i class="uil-location-point"></i>
-                    <span>location</span>
+                    <span>Location</span>
                 </a>
             </li>
             <li class="side-nav-item">

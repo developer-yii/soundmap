@@ -16,8 +16,9 @@ Route::group(['prefix' => 'location'], function () {
 		Route::get('/edit', 'LocationController@edit')->name('location.edit');	
 		Route::post('update', 'LocationController@update')->name('location.update');	
 		Route::post('/delete', 'LocationController@delete')->name('location.delete');
-       Route::POST('/imagedelete/{id}','LocationController@deleteimage')->name('location.deleteimage');
-
+       	Route::POST('/imagedelete/{id}','LocationController@deleteimage')->name('location.deleteimage');
+       	Route::post('/deletevideo/{id}','LocationController@deletevideo')->name('location.deletevideo');
+       	Route::post('/deleteaudio/{id}','LocationController@deleteaudio')->name('location.deleteaudio');
 	});
 
 Route::get('/', 'DashboardController@index')->name('dashboard');
@@ -29,12 +30,5 @@ Route::get('/detail', 'SiteController@detail')->name('map.detail');
 
 
 Route::middleware(['auth'])->group(function () {
-	Route::get('/home', 'HomeController@index')->name('home');
-	
+	Route::get('/home', 'HomeController@index')->name('home');	
 });
-
- 
-
-
-
-

@@ -153,7 +153,51 @@ $(document).ready(function() {
                     }
                 });
             }
-  });
+    });
+
+    $('.delete-video').on('click',function(e){
+        var $this = $(this);
+        var id=$(this).attr('data-id');
+        var url = deletevideourl;
+        url = url.replace(':id', id);
+        if(confirm('Are you sure want to delete?')){
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data:{
+                    id:id,
+                },
+                success: function(result) {
+                    element = $('#flash-message');
+                    showFlash(element, result.message, 'success');
+                    $this.closest('.delvid').remove();
+
+                }
+            });
+        }
+    });
+
+    $('.delete-audio').on('click',function(e){
+        var $this = $(this);
+        var id=$(this).attr('data-id');
+        var url = deleteaudiourl;
+        url = url.replace(':id', id);
+        if(confirm('Are you sure want to delete?')){
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data:{
+                    id:id,
+                },
+                success: function(result) {
+                    element = $('#flash-message');
+                    showFlash(element, result.message, 'success');
+                    $this.closest('.delaud').remove();
+
+                }
+            });
+        }
+    });
  
 
     $('body').on('click','.delete-location',function(event) {

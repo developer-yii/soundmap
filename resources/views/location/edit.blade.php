@@ -74,7 +74,10 @@
             </div>
             <div class="form-group fv-row mt-2">
                 @if($data->audio_file)
-                 <a href="{{asset('audio/locationaudio/'.$data->audio_file)}}" download>{{$data->audio_file}}<br></a>
+                <div class="delaud">
+                 <a href="{{asset('audio/locationaudio/'.$data->audio_file)}}" download>{{$data->audio_file}}</a> &nbsp;
+                 <i class="fa fa-trash delete-audio" value="{{$data->audio_file}}" data-id="{{$data->id}}"></i><br>
+               </div>
                  @endif
                <label for="Image">Audio file</label>
                <input class="form-control @error('audio_file') is-invalid @enderror" style="height: auto;" type="file" id="audio_file" name="audio_file">
@@ -86,7 +89,10 @@
             </div>
             <div class="form-group fv-row mt-2">
                 @if($data->video_file)
-                 <a href="{{asset('video/locationvideo/'.$data->video_file)}}" download>{{$data->video_file}}<br></a>
+                <div class="delvid">
+                 <a href="{{asset('video/locationvideo/'.$data->video_file)}}" download>{{$data->video_file}}</a> &nbsp;
+                 <i class="fa fa-trash delete-video" value="{{$data->video_file}}" data-id="{{$data->id}}"></i>
+                </div>
                  @endif
                <label for="video_file">Video file</label>
                <input class="form-control @error('video_file') is-invalid @enderror" style="height: auto;" type="file" id="video_file" name="video_file">
@@ -114,6 +120,8 @@
 <script>
    var apiUrl = "{{ route('location.list') }}"; 
    var deleteimgurl = "{{ route('location.deleteimage',['id' => ':id']) }}"; 
+   var deletevideourl = "{{ route('location.deletevideo',['id' => ':id']) }}"; 
+   var deleteaudiourl = "{{ route('location.deleteaudio',['id' => ':id']) }}"; 
    var updatelocationUrl = "{{ route('location.update') }}";
    var current_lat = '{{$data->latitude}}';
    var current_lan = '{{$data->longitude}}'; 

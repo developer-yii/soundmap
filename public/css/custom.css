@@ -90,3 +90,7 @@ input[data-switch]+label{
 .hidden{
     display: none;
 }
+
+.delete-video, .delete-audio {
+    cursor: pointer;
+}
