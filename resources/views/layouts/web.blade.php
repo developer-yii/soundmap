@@ -26,7 +26,7 @@
             var baseUrl = "{{asset('/')}}";
         </script>
         <style>
-            .kbw-signature { width: 100%; height: 200px;}
+            .kbw-signature { width: 100%; height: 200px; }
             #sig canvas{
                 width: 100% !important;
                 height: auto;
@@ -87,7 +87,8 @@
         <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" integrity="sha512-IsNh5E3eYy3tr/JiX2Yx4vsCujtkhwl7SLqgnwLNgf04Hrt9BT9SXlLlZlWx+OK4ndzAoALhsMNcCmkggjZB1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+        <script src="{{asset('/')}}js/player.js?{{cacheclear()}}" type="module"></script>
+        
         <script>            
             $(document).ready(function(){
                 setTimeout(function(){

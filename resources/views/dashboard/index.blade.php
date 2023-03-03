@@ -60,11 +60,11 @@
         <div class="nation-item2">
             <div class="hidden_link"></div>
             <div class="video-wrapper" style="display: none;">
-                @if(!empty($vidFile))
+                <!-- @if(!empty($vidFile)) -->
                <video controls width="100%" id="video" autoplay="true">
                 <source id="videoTag" src="{{  asset('video/locationvideo/'.$vidFile) }}" type='video/mp4'/>
                 </video>
-                @endif
+                <!-- @endif -->
             </div>
             
             <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" style="display: none;">
@@ -86,11 +86,24 @@
             </div>
             
             <div class="audio-wrapper" style="display: none;">
-                @if(!empty($audFile))
-                <audio controls autoplay id="audio">
+                <!-- @if(!empty($audFile)) -->
+                <div id="audio-player-container">
+                  <audio src="{{ asset('audio/locationaudio/'.$audFile) }}" preload="metadata" id="audio"></audio>
+                  <button id="shuffle"><i class="fa-solid fa-shuffle"></i></button>
+                  <button id="backward"><i class="fa-sharp fa-solid fa-backward-step"></i></button>
+                  <button id="play-icon"></button>
+                  <button id="forward"><i class="fa-sharp fa-solid fa-forward-step"></i></button>
+                  <span id="current-time" class="time">0:00</span>
+                  <input type="range" id="seek-slider" max="100" value="0">
+                  <span id="duration" class="time">0:00</span>
+                  <output id="volume-output" style="display: none">100</output>
+                  <input type="range" id="volume-slider" max="100" value="100"  style="display: none">
+                  <button id="mute-icon" style="display: none"></button>
+                </div>
+                <!-- <audio controls controlsList="nodownload noplaybackrate" autoplay id="audio">
                  <source id="audioTag" src="{{ asset('audio/locationaudio/'.$audFile) }}" type="audio/mpeg"/>
-                </audio>
-                @endif
+                </audio> -->
+                <!-- @endif -->
             </div>     
         </div> 
         <div class="nation-item2-desc">
