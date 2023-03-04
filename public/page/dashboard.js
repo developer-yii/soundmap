@@ -391,7 +391,7 @@ $(document).ready(function(){
                     $('.audio-wrapper').show();
                     if(result.audioSource)
                     {
-                        $('.audio-container').html('<audio controls width="100%" id="audio">'+
+                        $('.audio-container').html('<audio controls controlsList="nodownload noplaybackrate" id="audio">'+
                             '<source id="audioTag" src="'+result.audioSource+'" type="audio/mpeg"/>'+
                             '</audio>');
 

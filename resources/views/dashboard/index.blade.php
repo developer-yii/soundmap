@@ -61,7 +61,7 @@
             <div class="hidden_link"></div>
             <div class="video-wrapper" style="display: none;">
                 @if(!empty($vidFile))
-               <video controls width="100%" id="video" autoplay="true">
+               <video controls width="100%" id="video" autoplay>
                 <source id="videoTag" src="{{  asset('video/locationvideo/'.$vidFile) }}" type='video/mp4'/>
                 </video>
                 @endif
