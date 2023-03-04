@@ -85,12 +85,20 @@
               </button>
             </div>
             
-            <div class="audio-wrapper" style="display: none;">
-                @if(!empty($audFile))
-                <audio controls autoplay id="audio">
-                 <source id="audioTag" src="{{ asset('audio/locationaudio/'.$audFile) }}" type="audio/mpeg"/>
-                </audio>
-                @endif
+            <div class="audio-wrapper Row1" style="display: none;">
+                
+                <div class="Column1 buttons">
+                    <i class="fa-solid fa-shuffle"></i>
+                    <i class="fa-sharp fa-solid fa-backward-step"></i>
+                    <i class="fa-sharp fa-solid fa-forward-step"></i>
+                </div>
+                <div class="Column1 audio-container" style="padding-top: 5px;">
+                    @if(!empty($audFile))
+                    <audio controls autoplay controlsList="nodownload noplaybackrate" id="audio">
+                     <source id="audioTag" src="{{ asset('audio/locationaudio/'.$audFile) }}" type="audio/mpeg"/>
+                    </audio>
+                    @endif
+                </div>
             </div>     
         </div> 
         <div class="nation-item2-desc">

@@ -171,7 +171,7 @@ label {
 }
 
 .audio-wrapper {
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 .nation-item2-list  {
@@ -234,4 +234,49 @@ label {
     overflow-y: auto;
     overflow-x: hidden;
     display: none;
+}
+
+audio::-webkit-media-controls-play-button, audio::-webkit-media-controls-panel {
+  background-color: #fff;
+  color: #000;
+}
+
+#shuffle, #backward, #forward {
+  margin: 20px 10px 0 10px;
+}
+
+#shuffle i, #backward i, #forward i{
+  font-size: 20px;
+  margin-top: 4px;
+  color: #707070;
+}
+
+.fa-shuffle.active {
+  color: red !important;
+}
+
+
+.Row1 {
+    display: table;
+    width: 100%; /*Optional*/
+    table-layout: fixed; /*Optional*/
+    /*border-spacing: 10px; /*Optional*/*/
+}
+.Column1 {
+    display: table-cell;
+}
+
+.Column1.buttons {
+    width: 105px;
+    vertical-align: middle;
+}
+
+.Column1.buttons i {
+    margin: 0 12px;
+    cursor: pointer;
+    padding:0;
+}
+
+.Column1.buttons i:nth-last-child(1) {
+    margin-right: 0;
 }

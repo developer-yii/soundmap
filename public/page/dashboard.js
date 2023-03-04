@@ -285,13 +285,61 @@ $(document).ready(function(){
 		
 	}
 
+    function get_random_element(currentMediaIndex) {
+        var n_elements = $("#myUL li").length;
+        var random = Math.floor(Math.random()*n_elements);
+        if($("#myUL li").eq(random).find('a').attr('data-id') == currentMediaIndex)
+            return get_random_element(currentMediaIndex);
+        return random;
+    }
+
     // Define a function that will play the next media element in the array
     function playNextMedia(currentMediaIndex) {    
-        var curruntLi = $("#myUL li a[data-id='"+currentMediaIndex+"']").parent();
-        let nexiLi = curruntLi.next('li');
-        nexiLi.find('a').click();
-        return false;
+        console.log('playNextMedia');
+        if(getCookie('soundmap-shuffle') == 1)
+        {
+            random = get_random_element(currentMediaIndex);
+            console.log(random);
+            $("#myUL li").eq(random).find('a').click();
+            return false;
+        }
+        else
+        {
+            var curruntLi = $("#myUL li a[data-id='"+currentMediaIndex+"']").parent();
+            let nexiLi = curruntLi.next('li');
+            if(nexiLi.length > 0)
+                nexiLi.find('a').click();
+            else
+                $('#myUL').find('li:first').find('a').click();
+            return false;
+        }
     }
+
+    $(document).on('click','.fa-forward-step', function(e){
+        if($('.locationName.selected').length > 0)
+        {
+            var curruntLi = $("#myUL li a[data-id='"+$('.locationName.selected').attr('data-id')+"']").parent();
+            let nexiLi = curruntLi.next('li');
+            if(nexiLi.length > 0)
+                nexiLi.find('a').click();
+            else
+                $('#myUL').find('li:first').find('a').click();
+            return false;
+        }
+    });
+
+    $(document).on('click','.fa-backward-step', function(e){
+        if($('.locationName.selected').length > 0)
+        {
+            var curruntLi = $("#myUL li a[data-id='"+$('.locationName.selected').attr('data-id')+"']").parent();
+            let prevLi = curruntLi.prev('li');
+            if(prevLi.length > 0)
+                prevLi.find('a').click();
+            else
+                $('#myUL').find('li:last').find('a').click();
+            return false;
+        }
+    });
 
 
     $(document).on('click','.locationName', function(e){
@@ -343,7 +391,7 @@ $(document).ready(function(){
                     $('.audio-wrapper').show();
                     if(result.audioSource)
                     {
-                        $('.audio-wrapper').html('<audio controls width="100%" id="audio">'+
+                        $('.audio-container').html('<audio controls width="100%" id="audio">'+
                             '<source id="audioTag" src="'+result.audioSource+'" type="audio/mpeg"/>'+
                             '</audio>');
 
@@ -418,4 +466,40 @@ $(document).ready(function(){
         playNextMedia($('#myUL').find('li:first').find('a').attr('data-id'));
     });
 
+    $(document).on('click', '.fa-shuffle', function(){
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+            setCookie('soundmap-shuffle', 0, 365);
+        }
+        else {
+            $(this).addClass('active');
+            setCookie('soundmap-shuffle', 1, 365);
+        }
+    });
+    var shuffle = getCookie('soundmap-shuffle');
+    if(shuffle == '1')
+        $('.fa-shuffle').addClass('active');
 });
+
+function setCookie(cname,cvalue,exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  let expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
