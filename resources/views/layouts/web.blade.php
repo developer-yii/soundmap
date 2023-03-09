@@ -75,7 +75,7 @@
         <script src="{{asset('/')}}js/frontend/bootstrap.bundle.min.js"></script>
 
         <!--MAIN-JQUERY-->
-        <script src="{{asset('/')}}js/frontend/custom.js"></script>
+        <script src="{{asset('/')}}js/frontend/custom.js?{{cacheclear()}}"></script>
 
         <!--Open Layers-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script>

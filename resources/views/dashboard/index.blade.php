@@ -13,14 +13,14 @@
                     <i class="fa fa-search flip-icon"></i>
                 </div>
                 <div class="hidden-search-box" id="hidden-search-box" >
-                    <form action="">
+                    <!-- <form action=""> -->
                         <div class="input-group">
                             <input placeholder="Search" name=""  type="text" id="myInput" onkeyup="myFunction()">
-                            <button type="submit" class="search-btn">
-                            <i class="fa fa-search flip-icon"></i>
+                            <button type="button" class="search-btn">
+                            <i class="fa fa-times"></i>
                             </button>
                         </div>
-                    </form>
+                    <!-- </form> -->
                 </div>
             </div>  
             <div class="nation-item1-list mt-5">
@@ -45,7 +45,7 @@
 			            		$desc = $loc->description;      				
                 			?>
 		                    <li>
-		                        <a href="javascript:void(0)" data-id="{{ $location->id }}" class="locationName {{($key == 0 )?"selected":""}}">
+		                        <a href="javascript:void(0)" data-id="{{ $location->id }}" class="locationName {{($key == 0 )?"selected":""}}" data-key="{{$key}}">
 		                        	<p>{{ $location->location_name }}</p>
 		                        </a>
 		                    </li>                			
@@ -122,7 +122,7 @@
     </div>
     <div class="col-xl-5 col-lg-12">
         <div class="nation-item3">
-        	<div id="map" style="width: auto; height: 100vh;"></div>
+        	<div id="map" style="width: auto; height: 100vh;opacity: 0;"></div>
             {{-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d116706.88427665795!2d120.54551864597262!3d23.921862185823485!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3469319125cb8dad%3A0x7c22297becb353da!2sNantou%20City%2C%20Nantou%20County%2C%20Taiwan%20540!5e0!3m2!1sen!2sbd!4v1674732708764!5m2!1sen!2sbd"  style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> --}}
         </div>
     </div>

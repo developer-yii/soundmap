@@ -128,7 +128,7 @@ label {
   position: absolute;
   width: 100%;
   z-index: 20;
-  top: 30px;
+  top: -6px;
   right: 0;
 }
 

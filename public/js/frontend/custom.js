@@ -21,10 +21,16 @@ jQuery(document).ready(function(
 
 //search-bar
 $('#show-search-box').click(function(){
-  $("#hidden-search-box").toggle();
+  // $("#hidden-search-box").toggle();
+  // $("#show-search-box").hide();
+  $("#hidden-search-box").slideDown("fast");
 });
 
 
+$('#hidden-search-box .search-btn').click(function(){
+	$("#hidden-search-box").slideUp("fast");
+	// $("#show-search-box").show();
+});
 
  
 

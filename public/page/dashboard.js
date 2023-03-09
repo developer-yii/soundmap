@@ -29,7 +29,7 @@ function myFunction() {
     }
 }
 
-
+clicked_from = '';
 
 $(document).ready(function(){
 
@@ -67,6 +67,8 @@ $(document).ready(function(){
         }
 
         marker.addListener('click', function() {
+            // console.log('marker clicked');
+
             if (lastClickedMarker != null) {
                 // Reset the previously clicked marker to its default state
                 lastClickedMarker.setIcon('http://maps.google.com/mapfiles/ms/micons/blue.png');
@@ -77,8 +79,13 @@ $(document).ready(function(){
             // var isMapFullScreen = isMapFullScreen();
             if(!isMapFullScreen())
             {
-                $('.nation-item1-list #myUL').find('li a[data-id="'+marker.id+'"]').trigger('click');
+                if(clicked_from == '')
+                {
+                    clicked_from = 'map';
+                    $('.nation-item1-list #myUL').find('li a[data-id="'+marker.id+'"]').trigger('click');
+                }
             }
+            clicked_from = '';
 
             // Open the InfoWindow
             if (isMapFullScreen()) {
@@ -141,6 +148,7 @@ $(document).ready(function(){
                 infoWindow.setContent(contentString);
             
                 infoWindow.open(map, marker);
+                previous_Window=infoWindow;
             }
 
 
@@ -157,10 +165,10 @@ $(document).ready(function(){
             // Set the clicked property to true
             marker.clicked = true;                        
         });
-
+        
         markers.push(marker);                
     });
-
+    
     google.maps.event.addListener(infoWindow, 'domready', function() {
         // Get the InfoWindow's content container element
         var iwContainer = $('.gm-style-iw');
@@ -176,6 +184,15 @@ $(document).ready(function(){
     var markerCluster = new MarkerClusterer(map, markers, {
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
     });
+
+
+    setTimeout(function(){
+        clicked_from = 'map';
+        google.maps.event.trigger(markers[0], 'click');
+        clicked_from = '';
+        $('#map').css('opacity', 1);
+    },1000);
+
 
     // Handle the marker click event
     function handleMarkerClick(markerId) {                
@@ -295,11 +312,11 @@ $(document).ready(function(){
 
     // Define a function that will play the next media element in the array
     function playNextMedia(currentMediaIndex) {    
-        console.log('playNextMedia');
+        // console.log('playNextMedia');
         if(getCookie('soundmap-shuffle') == 1)
         {
             random = get_random_element(currentMediaIndex);
-            console.log(random);
+            // console.log(random);
             $("#myUL li").eq(random).find('a').click();
             return false;
         }
@@ -344,6 +361,15 @@ $(document).ready(function(){
 
     $(document).on('click','.locationName', function(e){
 		e.preventDefault();
+        
+        if(clicked_from == '')
+        {
+            clicked_from = 'link';
+            key = $(this).attr('data-key');
+            google.maps.event.trigger(markers[key], 'click');
+        }
+        clicked_from = '';
+
         $('.nation-item2-desc').css('display', 'none');
 		var placeId = $(this).attr('data-id');		
 		$this = $(this);
@@ -379,8 +405,8 @@ $(document).ready(function(){
                         const mediaElement = $(`.nation-item-container`).find('audio, video');
                         
                         mediaElement.on('ended', function(){
-                            console.log('ended');
-                            console.log(placeId);
+                            // console.log('ended');
+                            // console.log(placeId);
                             playNextMedia(placeId);
                         });
                     }
@@ -461,8 +487,8 @@ $(document).ready(function(){
     var mediaElement = $(`.nation-item-container`).find('audio, video');
 
     mediaElement.on('ended', function(){
-        console.log('ended');
-        console.log($('#myUL').find('li:first').find('a').attr('data-id'));
+        // console.log('ended');
+        // console.log($('#myUL').find('li:first').find('a').attr('data-id'));
         playNextMedia($('#myUL').find('li:first').find('a').attr('data-id'));
     });
 
@@ -479,6 +505,41 @@ $(document).ready(function(){
     var shuffle = getCookie('soundmap-shuffle');
     if(shuffle == '1')
         $('.fa-shuffle').addClass('active');
+
+    // events on full screen and minimize
+    $(document).on('click', '.gm-fullscreen-control', function(){
+        if($(this).attr('aria-pressed') == 'true') {
+            // console.log('full screen');
+            if($("#audio").length > 0)
+            {
+                audio = $("#audio").get(0);
+                audio.pause();
+            }
+            else
+            if($("#video").length > 0)
+            {
+                video = $("#video").get(0);
+                video.pause();
+            }
+        }
+        else {
+            // console.log('small screen');
+            if($(".info-window audio").length > 0)
+            {
+                audio = $(".info-window audio").get(0);
+                audio.pause();
+                $('.info-window').remove();
+            }
+            else
+            if($(".info-window video").length > 0)
+            {
+                video = $(".info-window video").get(0);
+                video.pause();
+                $('.info-window').remove();
+            }
+            previous_Window.close();
+        }
+    });
 });
 
 function setCookie(cname,cvalue,exdays) {
