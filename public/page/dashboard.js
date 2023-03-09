@@ -506,23 +506,52 @@ $(document).ready(function(){
     if(shuffle == '1')
         $('.fa-shuffle').addClass('active');
 
-    // events on full screen and minimize
-    $(document).on('click', '.gm-fullscreen-control', function(){
-        if($(this).attr('aria-pressed') == 'true') {
-            // console.log('full screen');
-            if($("#audio").length > 0)
-            {
-                audio = $("#audio").get(0);
-                audio.pause();
-            }
-            else
-            if($("#video").length > 0)
-            {
-                video = $("#video").get(0);
-                video.pause();
-            }
+    // google.maps.event.addListener(map, 'bounds_changed', function() {
+    //     console.log('bounds_changed');
+    //     setTimeout(function(){
+    //         map_area_change_event();
+    //     },1000)
+    // });
+
+    // // events on full screen and minimize
+    // $(document).on('click', '.gm-fullscreen-control', function(){
+    //     console.log('gm-fullscreen-control clicked');
+    //     map_area_change_event();
+    // });
+
+    google.maps.event.addListener( map, 'bounds_changed', onBoundsChanged );
+
+    function onBoundsChanged() {
+        if ( $(map.getDiv()).children().eq(0).height() == window.innerHeight &&
+             $(map.getDiv()).children().eq(0).width()  == window.innerWidth ) {
+            map_area_change_event('full');
         }
         else {
+            map_area_change_event('not-full');
+        }
+    }
+});
+
+function map_area_change_event(screen_size) {
+    // console.log(screen_size);
+    if(screen_size == 'full') {
+        // console.log('full screen');
+        if($("#audio").length > 0)
+        {
+            audio = $("#audio").get(0);
+            audio.pause();
+        }
+        else
+        if($("#video").length > 0)
+        {
+            video = $("#video").get(0);
+            video.pause();
+        }
+    }
+    else {
+        // console.log('minimize');
+        if($(".info-window").length > 0)
+        {
             // console.log('small screen');
             if($(".info-window audio").length > 0)
             {
@@ -539,9 +568,8 @@ $(document).ready(function(){
             }
             previous_Window.close();
         }
-    });
-});
-
+    }
+}
 function setCookie(cname,cvalue,exdays) {
   const d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
