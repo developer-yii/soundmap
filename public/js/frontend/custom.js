@@ -24,6 +24,8 @@ $('#show-search-box').click(function(){
   // $("#hidden-search-box").toggle();
   // $("#show-search-box").hide();
   $("#hidden-search-box").slideDown("fast");
+  $("#myInput").focus();
+
 });
 
 

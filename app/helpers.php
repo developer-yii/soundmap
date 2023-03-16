@@ -12,6 +12,10 @@ function getRoles()
 	$array = array(1=>'Super Admin',2=>'Business Owner',3=>'User');
 	return $array;
 }
+
+function nocache(){
+	return 'v='.time();
+}
 // function logo()
 // {
 //  	$user = auth()->user();

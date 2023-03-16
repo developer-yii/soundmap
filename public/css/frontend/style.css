@@ -120,7 +120,7 @@ label {
   color: #000000;
   margin-left: auto;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 14px;
 }
 
 .hidden-search-box {
@@ -141,10 +141,13 @@ label {
   width: calc(100% - 26px);
   padding: 8px 15px;
   outline: none;
-  background: #000000;
-  color: #ffffff;
+  /*background: #000000;
+  color: #ffffff;*/
+  color: #000;
   border: 0;
   font-size: 15px;
+  border: 1px solid #c2bfbf;
+  border-left: 0;
 }
 
 .input-group input::placeholder {
@@ -160,8 +163,11 @@ label {
   outline: none;
   width: 30px;
   height: 100%;
-  background: #ff0000;
-  color: #fff;
+  background: white;
+  color: #000;
+  border: 1px solid #c2bfbf;
+  border-left: 0;
+  border-right: 0;
 }
 
 .nation-item3 iframe {
@@ -279,4 +285,12 @@ audio::-webkit-media-controls-play-button, audio::-webkit-media-controls-panel {
 
 .Column1.buttons i:nth-last-child(1) {
     margin-right: 0;
+}
+
+.fa-times {
+  font-size: 18px;
+}
+
+#myInput::placeholder{
+  color: #6c757d;
 }

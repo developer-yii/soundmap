@@ -12,7 +12,7 @@
         <!--BOOTSTRAP-CSS-->
         <link href="{{asset('/')}}css/frontend/bootstrap.css" rel="stylesheet" type="text/css" />
         <link href="{{asset('/')}}css/frontend/responsive.css" rel="stylesheet" type="text/css" />
-        <link href="{{asset('/')}}css/frontend/style.css" rel="stylesheet" type="text/css" />
+        <link href="{{asset('/')}}css/frontend/style.css?{{nocache()}}" rel="stylesheet" type="text/css" />
 
         <!--SOCIAL-ICON-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>    
