@@ -61,11 +61,6 @@ $(document).ready(function(){
             id: location.id
         });       
 
-        // check if the map is in full screen mode
-        function isMapFullScreen() {
-          return (window.innerHeight == screen.height);
-        }
-
         marker.addListener('click', function() {
             // console.log('marker clicked');
 
@@ -76,8 +71,7 @@ $(document).ready(function(){
             
             var locationData = getData(marker.id);
             var locationData = locationData.responseJSON;
-            // var isMapFullScreen = isMapFullScreen();
-            if(!isMapFullScreen())
+            if(!is_full_map)
             {
                 if(clicked_from == '')
                 {
@@ -87,8 +81,10 @@ $(document).ready(function(){
             }
             clicked_from = '';
 
+            // console.log('map is not full screen');
             // Open the InfoWindow
-            if (isMapFullScreen()) {
+            if (is_full_map) {
+                console.log('map is full screen');
                 var htm = '';
                 if(locationData.locationsimg.length)
                 {                
@@ -127,21 +123,37 @@ $(document).ready(function(){
                 
                 if(locationData.audioSource)
                 {
-                    audiofile += '<div class="audio_song mb-2">'+
-                    '<audio style="width: 100%;" controls><source src="'+locationData.audioSource+'" type="audio/ogg"></source></audio></div>';
-                }            
+                    // audiofile += '<div class="audio_song mb-2">'+
+                    // '<audio style="width: 100%;" controls><source src="'+locationData.audioSource+'" type="audio/ogg"></source></audio></div>';
+                    var shuffle = getCookie('soundmap-shuffle');
+                    var shuffle_class = '';
+                    if(shuffle == '1')
+                        shuffle_class = 'active';
+
+                    audiofile += '<div class="audio-wrapper Row1">'+
+                                        '<div class="Column1 buttons">'+
+                                            '<i class="fa-solid fa-shuffle '+shuffle_class+'"></i>'+
+                                            '<i class="fa-sharp fa-solid fa-backward-step"></i>'+
+                                            '<i class="fa-sharp fa-solid fa-forward-step"></i>'+
+                                        '</div>'+
+                                        '<div class="Column1 audio-container" style="padding-top: 5px;">'+
+                                            '<audio controls controlsList="nodownload noplaybackrate" id="audio">'+
+                                                '<source id="audioTag" src="'+locationData.audioSource+'" type="audio/mpeg"/>'+
+                                            '</audio>'+
+                                        '</div>'+
+                                    '</div>';
+                }
 
                 var contentString = '<div class="info-window">' +
-                    '<div class="info-window-images mb-2">' +                 
-                        htm +                
+                    '<div class="info-window-images mb-2">' +
+                        htm +
                     '</div>' +
                         videofile + audiofile +
-                    '<h6>' + locationData.data.location_name + '</h6>' +                
-                    '<p>' + locationData.data.latitude + ' ' + locationData.data.longitude + '</p>' +                
-                    '<div class="info-window-content">' +                
+                    '<h6>' + locationData.data.location_name + '</h6>' +
+                    '<p>' + locationData.data.latitude + ' ' + locationData.data.longitude + '</p>' +
+                    '<div class="info-window-content">' +
                         locationData.data.description +
                     '</div>' +
-                    
                     '</div>';
                 
                  // Set the InfoWindow content
@@ -176,6 +188,36 @@ $(document).ready(function(){
         var iwContent = iwContainer.children(':first');
         // Apply the minimum width property
         iwContent.css('max-width', '300px');
+
+        setTimeout(function(){
+            if($(".info-window #audio").length > 0)
+            {
+                audio = $(".info-window #audio").get(0);
+                audio.pause();
+                audio.load();
+                audio.play();
+                var mediaElement = $(`.info-window`).find('audio');
+
+                mediaElement.on('ended', function(){
+                    console.log($('.locationName.selected').attr('data-id'));
+                    playNextMedia($('.locationName.selected').attr('data-id'));
+                });
+            }
+
+            if($(".info-window video").length > 0)
+            {
+                video = $(".info-window video").get(0);
+                video.pause();
+                video.load();
+                video.play();
+                var mediaElement = $(`.info-window`).find('video');
+                
+                mediaElement.on('ended', function(){
+                    console.log($('.locationName.selected').attr('data-id'));
+                    playNextMedia($('.locationName.selected').attr('data-id'));
+                });
+            }
+        },500);
     });
 
 
@@ -361,7 +403,8 @@ $(document).ready(function(){
 
     $(document).on('click','.locationName', function(e){
 		e.preventDefault();
-        
+        console.log('left sidebar link clicked');
+
         if(clicked_from == '')
         {
             clicked_from = 'link';
@@ -395,20 +438,19 @@ $(document).ready(function(){
                             '<source id="videoTag" src="'+result.videoSource+'" type="video/mp4"/>'+
                             '</video>');
                         
-                        video = $("#video").get(0);
-                    	// video1 = $("#videoTag")[0];                	
-                    	// video1.src = result.videoSource;       
-                    	video.pause();
-                    	video.load();
-                        video.play();
+                        if(!is_full_map)
+                        {
+                            video = $(".nation-item-container #video").get(0);
+                        	video.pause();
+                        	video.load();
+                            video.play();
 
-                        const mediaElement = $(`.nation-item-container`).find('audio, video');
-                        
-                        mediaElement.on('ended', function(){
-                            // console.log('ended');
-                            // console.log(placeId);
-                            playNextMedia(placeId);
-                        });
+                            const mediaElement = $(`.nation-item-container`).find('audio, video');
+                            
+                            mediaElement.on('ended', function(){
+                                playNextMedia(placeId);
+                            });
+                        }
                     }
                     else{
                         $('.video-wrapper').hide();
@@ -421,17 +463,18 @@ $(document).ready(function(){
                             '<source id="audioTag" src="'+result.audioSource+'" type="audio/mpeg"/>'+
                             '</audio>');
 
-                        audio = $("#audio").get(0);
-                    	// audio1 = $("#audioTag")[0];                	
-                    	// audio1.src = result.audioSource;       
-                    	audio.pause();
-                    	audio.load();
-                        audio.play();
-                        var mediaElement = $(`.nation-item-container`).find('audio, video');
+                        if(!is_full_map)
+                        {
+                            audio = $(".nation-item-container #audio").get(0);
+                            audio.pause();
+                            audio.load();
+                            audio.play();
+                            var mediaElement = $(`.nation-item-container`).find('audio, video');
 
-                        mediaElement.on('ended', function(){
-                            playNextMedia(placeId);
-                        });
+                            mediaElement.on('ended', function(){
+                                playNextMedia(placeId);
+                            });
+                        }
                     }
                     else{
                         $('.audio-wrapper').hide();
@@ -494,11 +537,11 @@ $(document).ready(function(){
 
     $(document).on('click', '.fa-shuffle', function(){
         if($(this).hasClass('active')){
-            $(this).removeClass('active');
+            $('.fa-shuffle').removeClass('active');
             setCookie('soundmap-shuffle', 0, 365);
         }
         else {
-            $(this).addClass('active');
+            $('.fa-shuffle').addClass('active');
             setCookie('soundmap-shuffle', 1, 365);
         }
     });
@@ -519,32 +562,30 @@ $(document).ready(function(){
     //     map_area_change_event();
     // });
 
-    google.maps.event.addListener( map, 'bounds_changed', onBoundsChanged );
-
-    function onBoundsChanged() {
-        if ( $(map.getDiv()).children().eq(0).height() == window.innerHeight &&
-             $(map.getDiv()).children().eq(0).width()  == window.innerWidth ) {
-            map_area_change_event('full');
+    is_full_map = false;
+    window.matchMedia('(display-mode: fullscreen)').addEventListener('change', ({ matches }) => {
+        if (matches) {
+            is_full_map = true;
+        } else {
+            is_full_map = false;
         }
-        else {
-            map_area_change_event('not-full');
-        }
-    }
+        map_area_change_event();
+    });
 });
 
-function map_area_change_event(screen_size) {
-    // console.log(screen_size);
-    if(screen_size == 'full') {
+function map_area_change_event() {
+    console.log('is_full_map : '+is_full_map);
+    if(is_full_map) {
         // console.log('full screen');
-        if($("#audio").length > 0)
+        if($(".nation-item-container #audio").length > 0)
         {
-            audio = $("#audio").get(0);
+            audio = $(".nation-item-container #audio").get(0);
             audio.pause();
         }
         else
-        if($("#video").length > 0)
+        if($(".nation-item-container #video").length > 0)
         {
-            video = $("#video").get(0);
+            video = $(".nation-item-container #video").get(0);
             video.pause();
         }
     }
