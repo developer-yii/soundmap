@@ -116,7 +116,7 @@ $(document).ready(function(){
                 if(locationData.videoSource)
                 {
                     videofile += '<div class="video_song mb-2">'+
-                    '<video style="width: 100%;" controls><source src="'+locationData.videoSource+'" type="video/ogg"></source></video></div>';
+                    '<video style="width: 100%;" controls controlsList="nodownload noplaybackrate" disablePictureInPicture="true" id="video"><source src="'+locationData.videoSource+'" type="video/ogg"></source></video></div>';
                 }
 
                 var audiofile = '';
@@ -434,7 +434,7 @@ $(document).ready(function(){
                     $('.video-wrapper').show();
                     if(result.videoSource)
                     {
-                        $('.video-wrapper').html('<video controls width="100%" id="video">'+
+                        $('.video-wrapper').html('<video controls controlsList="nodownload noplaybackrate" disablePictureInPicture="true" width="100%" id="video">'+
                             '<source id="videoTag" src="'+result.videoSource+'" type="video/mp4"/>'+
                             '</video>');
                         
