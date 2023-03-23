@@ -150,10 +150,10 @@ $(document).ready(function(){
                     '</div>' +
                         videofile + audiofile +
                     '<h6>' + locationData.data.location_name + '</h6>' +
-                    '<p>' + locationData.data.latitude + ' ' + locationData.data.longitude + '</p>' +
-                    '<div class="info-window-content">' +
-                        locationData.data.description +
-                    '</div>' +
+                    // '<p>' + locationData.data.latitude + ' ' + locationData.data.longitude + '</p>' +
+                    // '<div class="info-window-content">' +
+                    //     locationData.data.description +
+                    // '</div>' +
                     '</div>';
                 
                  // Set the InfoWindow content
