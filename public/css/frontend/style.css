@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,600;1,700&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,600;1,700&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,600;1,700&display=swap');
 
 /*==BASIC-SETUP==*/
 body {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 16px;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 14px;
   font-weight: 400;
   color: #000000;
   background: #fff;
@@ -58,7 +59,7 @@ label {
 /*==THIS IS START==*/
 .nation-item1 {
   position: sticky;
-  height: 100vh;
+  height: calc(100vh - 100px);
   overflow-y: scroll;
   top: 0;
   -ms-overflow-style: none;  
@@ -66,7 +67,7 @@ label {
 }
 .nation-item3 {
   position: sticky;
-  height: 100vh;
+  height: calc(100vh - 100px);
 /*  overflow-y: scroll;*/
   top: 0;
   -ms-overflow-style: none;  
@@ -100,7 +101,7 @@ label {
 
 .nation-item1-list ul li a {
   font-weight: 200;
-  font-size: 16px;
+  font-size: 14px;
   transition: 0.2s all ease;
   color: #000000;
 }
@@ -177,16 +178,16 @@ label {
 }
 
 .audio-wrapper {
-  margin-top: 5px;
+  /*margin-top: 5px;*/
 }
 
 .nation-item2-list  {
-  margin-top: 50px;
+  /*margin-top: 50px;*/
 }
 
 .nation-item2-list ul li {
   font-weight: 200;
-  font-size: 20px;
+  font-size: 14px;
   color: #000000;
 }
 
@@ -196,12 +197,18 @@ label {
 
 .nation-item2-list2 ul li {
   font-weight: 200;
-  font-size: 20px;
+  font-size: 14px;
   color: #000000;
 }
 
 .audio-wrapper audio {
   width: 100%;
+  height: 60px;
+  line-height: unset;
+}
+
+.info-window .audio-wrapper audio{
+  height: 42px;
 }
 
 .selected{
@@ -224,7 +231,7 @@ label {
 }
 .carousel-item {  
 /*  align-items: center!important;*/
-  height: 100%!important;
+  max-height: 100%!important;
 }
 .carousel-item img {
   max-height: 100%;
@@ -261,6 +268,10 @@ audio::-webkit-media-controls-play-button, audio::-webkit-media-controls-panel {
   color: red !important;
 }
 
+.fa-shuffle {
+  margin-left: 0px;
+}
+
 
 .Row1 {
     display: table;
@@ -273,14 +284,18 @@ audio::-webkit-media-controls-play-button, audio::-webkit-media-controls-panel {
 }
 
 .Column1.buttons {
-    width: 105px;
+    width: 83px;
     vertical-align: middle;
 }
 
 .Column1.buttons i {
-    margin: 0 12px;
+    margin: 0 8px;
     cursor: pointer;
     padding:0;
+}
+
+.info-window .Column1.buttons i {
+  margin: 0 12px;
 }
 
 .Column1.buttons i:nth-last-child(1) {
@@ -304,7 +319,7 @@ audio::-webkit-media-controls-play-button, audio::-webkit-media-controls-panel {
 }
 
 .info-window .Column1.buttons i{
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .info-window {

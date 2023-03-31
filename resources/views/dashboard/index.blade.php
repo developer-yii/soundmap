@@ -5,6 +5,9 @@
 @endsection
 
 @section('content')
+<div class="row" style="height: 100px;">
+    &nbsp;
+</div>
 <div class="row">
     <div class="col-lg-6 col-xl-2">
         <div class="nation-item1">
@@ -68,7 +71,7 @@
             </div>
             
             <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" style="display: none;">
-              <div class="carousel-inner d-flex align-items-center" id="imgDiv" style="height: 400px;">
+              <div class="carousel-inner d-flex align-items-center" id="imgDiv" style="max-height: 400px;">
                 @foreach($locationsimg as $key => $img)
                     <div class="carousel-item {{($key == 0 ) ? "active" : ""}}">
                       <img src="{{asset('images/locationimage').'/'.$img->image_path}}" class="d-block w-100" alt="...">
@@ -92,7 +95,7 @@
                     <i class="fa-sharp fa-solid fa-backward-step"></i>
                     <i class="fa-sharp fa-solid fa-forward-step"></i>
                 </div>
-                <div class="Column1 audio-container" style="padding-top: 5px;">
+                <div class="Column1 audio-container" style="">
                     @if(!empty($audFile))
                     <audio controls autoplay controlsList="nodownload noplaybackrate" id="audio">
                      <source id="audioTag" src="{{ asset('audio/locationaudio/'.$audFile) }}" type="audio/mpeg"/>
@@ -122,7 +125,7 @@
     </div>
     <div class="col-xl-5 col-lg-12">
         <div class="nation-item3">
-        	<div id="map" style="width: auto; height: 100vh;opacity: 0;"></div>
+        	<div id="map" style="width: auto; height: calc(100vh - 100px); opacity: 0;"></div>
             {{-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d116706.88427665795!2d120.54551864597262!3d23.921862185823485!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3469319125cb8dad%3A0x7c22297becb353da!2sNantou%20City%2C%20Nantou%20County%2C%20Taiwan%20540!5e0!3m2!1sen!2sbd!4v1674732708764!5m2!1sen!2sbd"  style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> --}}
         </div>
     </div>
@@ -202,6 +205,7 @@
     var audFile = "{{ $audFile }}";
     var videopath = "{{ asset('video/locationvideo') }}";
     var audiopath = "{{ asset('audio/locationaudio') }}";
+    var markerImg = "{{asset('images/')}}";
 </script>
 @endsection
 

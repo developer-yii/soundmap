@@ -31,6 +31,16 @@ function myFunction() {
 
 clicked_from = '';
 
+// google.maps.event.addDomListener(window, 'load', init);
+
+// function init() {
+//     // Basic options for a simple Google Map
+//     // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
+    
+
+    
+// }
+
 $(document).ready(function(){
 
     // Initialize the Google Map      
@@ -45,7 +55,18 @@ $(document).ready(function(){
         });        
     }
 
-    initMap();
+    // Initialize map Starts
+    var mapOptions = {
+        styles: [{"featureType":"all","elementType":"geometry.fill","stylers":[{"lightness":"0"}]},{"featureType":"administrative","elementType":"all","stylers":[{"saturation":"-100"}]},{"featureType":"administrative.province","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"administrative.locality","elementType":"labels.text","stylers":[{"lightness":"25"}]},{"featureType":"administrative.neighborhood","elementType":"all","stylers":[{"visibility":"simplified"},{"lightness":"25"}]},{"featureType":"landscape","elementType":"all","stylers":[{"saturation":-100},{"lightness":65},{"visibility":"simplified"}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"lightness":"-5"}]},{"featureType":"poi","elementType":"all","stylers":[{"saturation":-100},{"lightness":"50"},{"visibility":"simplified"}]},{"featureType":"poi","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"visibility":"simplified"},{"color":"#dcedc8"}]},{"featureType":"road","elementType":"all","stylers":[{"saturation":"-100"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"lightness":"-5"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"visibility":"simplified"},{"lightness":"25"}]},{"featureType":"road.highway","elementType":"labels.text.fill","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","elementType":"labels.icon","stylers":[{"visibility":"simplified"},{"lightness":"-5"}]},{"featureType":"road.highway.controlled_access","elementType":"labels.text","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"lightness":"30"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"visibility":"simplified"},{"weight":"2"}]},{"featureType":"road.arterial","elementType":"geometry.stroke","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"labels.text.fill","stylers":[{"visibility":"on"}]},{"featureType":"road.arterial","elementType":"labels.text.stroke","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"all","stylers":[{"lightness":"40"}]},{"featureType":"transit","elementType":"all","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"transit.line","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit.station","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"transit.station","elementType":"labels","stylers":[{"visibility":"simplified"},{"lightness":"50"}]},{"featureType":"transit.station","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit.station.bus","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit.station.rail","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#ffff00"},{"lightness":-25},{"saturation":-97}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#c3cfee"},{"visibility":"on"}]},{"featureType":"water","elementType":"labels.text","stylers":[{"lightness":"100"}]}]
+    };
+
+    // Get the HTML DOM element that will contain your map 
+    // We are using a div with id="map" seen below in the <body>
+    var mapElement = document.getElementById('map');
+
+    // Create the Google Map using our element and options defined above
+    var map = new google.maps.Map(mapElement, mapOptions);
+    // Initialize map ends
 
     var markers = [];
     var lastClickedMarker = null;
@@ -53,20 +74,24 @@ $(document).ready(function(){
     var infoWindow = new google.maps.InfoWindow();
 
     $.each(latlongarray, function(index, location) {
+        console.log('marker='+markerImg+'/marker.png');
+
         var marker = new google.maps.Marker({
             position: {lat: location.latitude, lng: location.longitude},
             map: map,
-            icon: location.marker,
+            icon: markerImg+'/marker.png',
             title: location.title,
             id: location.id
-        });       
+        });
 
         marker.addListener('click', function() {
             // console.log('marker clicked');
 
             if (lastClickedMarker != null) {
                 // Reset the previously clicked marker to its default state
-                lastClickedMarker.setIcon('http://maps.google.com/mapfiles/ms/micons/blue.png');
+                // lastClickedMarker.setIcon('http://maps.google.com/mapfiles/ms/micons/blue.png');
+                lastClickedMarker.setIcon(markerImg+'/marker.png');
+                
             }
             
             var locationData = getData(marker.id);
@@ -136,7 +161,7 @@ $(document).ready(function(){
                                             '<i class="fa-sharp fa-solid fa-backward-step"></i>'+
                                             '<i class="fa-sharp fa-solid fa-forward-step"></i>'+
                                         '</div>'+
-                                        '<div class="Column1 audio-container" style="padding-top: 5px;">'+
+                                        '<div class="Column1 audio-container" style="">'+
                                             '<audio controls controlsList="nodownload noplaybackrate" id="audio">'+
                                                 '<source id="audioTag" src="'+locationData.audioSource+'" type="audio/mpeg"/>'+
                                             '</audio>'+
@@ -169,8 +194,8 @@ $(document).ready(function(){
             map.setZoom(15, {animate: true});
 
             // Change the marker's color
-            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');                
-
+            marker.setIcon(markerImg+'/selected-marker.png');
+            
             // Set the clicked property to true
             lastClickedMarker = marker;
 
@@ -510,7 +535,7 @@ $(document).ready(function(){
                     $('#location').html(result.location.latitude+' '+result.location.longitude);
 
                     setTimeout(function(){
-                        $('.nation-item2-desc').css('height', 'calc(100vh - '+($('.nation-item2').height()+10)+'px)');
+                        $('.nation-item2-desc').css('height', 'calc(100vh - '+($('.nation-item2').height()+110)+'px)');
                         $('.nation-item2-desc').css('display', 'block');
                     },100);
                 } else {
@@ -524,7 +549,7 @@ $(document).ready(function(){
 	})
     
 
-    $('.nation-item2-desc').css('height', 'calc(100vh - '+($('.nation-item2').height()+10)+'px)');
+    $('.nation-item2-desc').css('height', 'calc(100vh - '+($('.nation-item2').height()+110)+'px)');
     $('.nation-item2-desc').css('display', 'block');
 
     var mediaElement = $(`.nation-item-container`).find('audio, video');
