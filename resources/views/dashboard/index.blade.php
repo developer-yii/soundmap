@@ -8,7 +8,7 @@
 <div class="row" style="height: 100px;">
     &nbsp;
 </div>
-<div class="row">
+<div class="row g-2">
     <div class="col-lg-6 col-xl-2">
         <div class="nation-item1">
             <div class="search-wrapper">
