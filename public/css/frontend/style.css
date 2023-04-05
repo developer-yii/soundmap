@@ -57,6 +57,15 @@ label {
 }
 
 /*==THIS IS START==*/
+.main-wrapper {
+  /*padding: 0 0 20px 0;*/
+}
+
+.main-wrapper .container {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
 .nation-item1 {
   position: sticky;
   height: calc(100vh - 100px);
@@ -72,6 +81,7 @@ label {
   top: 0;
   -ms-overflow-style: none;  
   scrollbar-width: none;  
+  padding-left: 12px;
 }
 
 .nation-item2 {
@@ -81,6 +91,7 @@ label {
     
     overflow: hidden;
     background: #fff;
+    padding-left: 4px;
 }
 
 .nation-item1::-webkit-scrollbar {
@@ -182,7 +193,7 @@ label {
 }
 
 .nation-item2-list  {
-  /*margin-top: 50px;*/
+  margin-top: 12px;
 }
 
 .nation-item2-list ul li {
@@ -278,6 +289,7 @@ audio::-webkit-media-controls-play-button, audio::-webkit-media-controls-panel {
     width: 100%; /*Optional*/
     table-layout: fixed; /*Optional*/
     /*border-spacing: 10px; /*Optional*/*/
+    margin-top: 3px;
 }
 .Column1 {
     display: table-cell;
