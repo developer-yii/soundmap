@@ -29,8 +29,6 @@ function myFunction() {
     }
 }
 
-
-
 $(document).ready(function(){
 
     // Initialize the Google Map      
@@ -317,11 +315,16 @@ $(document).ready(function(){
 
     $(document).on('click','.locationName', function(e){
 		e.preventDefault();
+        if($('.audio-wrapper').is(":visible"))
+        {
+            if(!$("#audio").get(0).paused)
+                $('#play-icon').trigger('click');
+        }
+
         $('.nation-item2-desc').css('display', 'none');
 		var placeId = $(this).attr('data-id');		
 		$this = $(this);
-
-		$('#myUL a').each(function() {
+        $('#myUL a').each(function() {
 			$(this).removeClass('selected');    
 		});
 		$this.addClass('selected');
@@ -399,9 +402,9 @@ $(document).ready(function(){
                     	// audio.pause();
                     	// audio.load();
                         // audio.play();
-                        setTimeout(function(){
-                            $('#play-icon').trigger('click');
-                        },1000);
+                        // setTimeout(function(){
+                        //     $('#play-icon').trigger('click');
+                        // },1000);
                         var mediaElement = $(`.nation-item-container`).find('audio, video');
 
                         mediaElement.on('ended', function(){
@@ -485,8 +488,56 @@ $(document).ready(function(){
         $('.fa-shuffle').addClass('active');
 
     // load_player();
+
+    is_full_map = false;
+    window.matchMedia('(display-mode: fullscreen)').addEventListener('change', ({ matches }) => {
+        if (matches) {
+            is_full_map = true;
+        } else {
+            is_full_map = false;
+        }
+        map_area_change_event();
+    });
 });
 
+function map_area_change_event() {
+    console.log('is_full_map : '+is_full_map);
+    if(is_full_map) {
+        // console.log('full screen');
+        if($(".nation-item-container #audio").length > 0)
+        {
+            audio = $(".nation-item-container #audio").get(0);
+            audio.pause();
+        }
+        else
+        if($(".nation-item-container #video").length > 0)
+        {
+            video = $(".nation-item-container #video").get(0);
+            video.pause();
+        }
+    }
+    else {
+        // console.log('minimize');
+        if($(".info-window").length > 0)
+        {
+            // console.log('small screen');
+            if($(".info-window audio").length > 0)
+            {
+                audio = $(".info-window audio").get(0);
+                audio.pause();
+                $('.info-window').remove();
+            }
+            else
+            if($(".info-window video").length > 0)
+            {
+                video = $(".info-window video").get(0);
+                video.pause();
+                $('.info-window').remove();
+            }
+            previous_Window.close();
+        }
+    }
+}
 
 
 function setCookie(cname,cvalue,exdays) {

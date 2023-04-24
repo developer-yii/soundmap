@@ -4,6 +4,14 @@
     <link rel="stylesheet" href="{{ asset('css/page/dashboard.css') }}?{{time()}}" />
 @endsection
 
+<script>
+    let playState = '';
+    function myOnCanPlayFunction() { console.log('Can play'); }
+    function myOnCanPlayThroughFunction() { console.log('Can play through'); }
+    function myOnLoadedData() { console.log('Loaded data'); setTimeout(function(){ $("#play-icon").trigger('click'); console.log("playState"+playState); },500); }
+
+</script>
+
 @section('content')
 <div class="row">
     <div class="col-lg-6 col-xl-2">
@@ -88,7 +96,9 @@
             <div class="audio-wrapper" style="display: none;">
                 <!-- @if(!empty($audFile)) -->
                 <div id="audio-player-container">
-                  <audio src="{{ asset('audio/locationaudio/'.$audFile) }}" preload="metadata" id="audio"></audio>
+                  <audio src="{{ asset('audio/locationaudio/'.$audFile) }}" preload="metadata" id="audio" oncanplay="myOnCanPlayFunction()"
+       oncanplaythrough="myOnCanPlayThroughFunction()"
+       onloadeddata="myOnLoadedData()"></audio>
                   <button id="shuffle"><i class="fa-solid fa-shuffle"></i></button>
                   <button id="backward"><i class="fa-sharp fa-solid fa-backward-step"></i></button>
                   <button id="play-icon"></button>
